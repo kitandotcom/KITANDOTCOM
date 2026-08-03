@@ -430,6 +430,64 @@
   }
   footer a{color:var(--muted);}
   footer a:hover{color:var(--teal);}
+
+  /* Contact form */
+  .contact-card{
+    background:var(--glass);
+    border:1px solid var(--glass-border);
+    border-radius:16px;
+    padding:36px;
+    backdrop-filter:blur(20px);
+    box-shadow:0 30px 80px -30px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
+    max-width:560px;
+  }
+  .field{margin-bottom:18px;}
+  .field label{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--muted);
+    margin-bottom:8px;
+  }
+  .field input, .field textarea{
+    width:100%;
+    background:rgba(255,255,255,0.03);
+    border:1px solid var(--glass-border);
+    border-radius:8px;
+    padding:12px 14px;
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    font-size:14.5px;
+    transition:border-color .25s ease, background .25s ease;
+  }
+  .field input:focus, .field textarea:focus{
+    outline:none;
+    border-color:var(--teal);
+    background:rgba(63,224,214,0.04);
+  }
+  .field textarea{resize:vertical; min-height:100px;}
+  .submit-btn{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'Inter', sans-serif;
+    font-weight:600;
+    font-size:14px;
+    color:#0A0B10;
+    background:var(--grad);
+    border:none;
+    padding:12px 24px;
+    border-radius:9px;
+    cursor:pointer;
+    transition:opacity .2s ease, transform .2s ease;
+  }
+  .submit-btn:hover{opacity:0.88; transform:translateY(-2px);}
+  .submit-btn:disabled{opacity:0.5; cursor:not-allowed; transform:none;}
+  .form-status{
+    margin-top:14px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+  }
+  .form-status.ok{color:var(--teal);}
+  .form-status.err{color:#FF8A80;}
 </style>
 </head>
 <body>
@@ -560,11 +618,74 @@
     </div>
   </section>
 
+  <section>
+    <div class="eyebrow reveal">// get in touch</div>
+    <h2 class="section-title reveal">Let's work together</h2>
+    <p class="section-sub reveal">Have a project in mind? Send a few details and I'll get back to you.</p>
+
+    <div class="contact-card reveal">
+      <form id="contact-form">
+        <div class="field">
+          <label for="cf-name">Name</label>
+          <input type="text" id="cf-name" name="name" required>
+        </div>
+        <div class="field">
+          <label for="cf-email">Email</label>
+          <input type="email" id="cf-email" name="email" required>
+        </div>
+        <div class="field">
+          <label for="cf-message">Message</label>
+          <textarea id="cf-message" name="message" required></textarea>
+        </div>
+        <button type="submit" class="submit-btn" id="cf-submit">Send message</button>
+        <div class="form-status" id="cf-status"></div>
+      </form>
+    </div>
+  </section>
+
   <footer>
     <div>Built by Kitan Aderounmu</div>
     <div><a href="mailto:aderounmuisrael6@gmail.com">aderounmuisrael6@gmail.com</a> · +234 913 481 8161</div>
   </footer>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+  const SUPABASE_URL = 'https://ahnvhsynrthmpcfwxghp.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFobnZoc3lucnRobXBjZnd4Z2hwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU3Mzk2NzMsImV4cCI6MjEwMTMxNTY3M30.gtD-53frjWEuwjlH4tpMMFGKHOa_aXbQneQVKXLOTds';
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const contactForm = document.getElementById('contact-form');
+  const cfSubmit = document.getElementById('cf-submit');
+  const cfStatus = document.getElementById('cf-status');
+
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    cfSubmit.disabled = true;
+    cfSubmit.textContent = 'Sending…';
+    cfStatus.textContent = '';
+    cfStatus.className = 'form-status';
+
+    const name = document.getElementById('cf-name').value.trim();
+    const email = document.getElementById('cf-email').value.trim();
+    const message = document.getElementById('cf-message').value.trim();
+
+    const { error } = await sb.from('contact_messages').insert([{ name, email, message }]);
+
+    if (error) {
+      cfStatus.textContent = 'Something went wrong — please try again or email me directly.';
+      cfStatus.classList.add('err');
+      cfSubmit.disabled = false;
+      cfSubmit.textContent = 'Send message';
+    } else {
+      cfStatus.textContent = "Thanks — I'll get back to you soon.";
+      cfStatus.classList.add('ok');
+      contactForm.reset();
+      cfSubmit.disabled = false;
+      cfSubmit.textContent = 'Send message';
+    }
+  });
+</script>
 
 <script>
   // Scroll reveal
