@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kitan Aderounmu — Web Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0B10;
+    --bg-violet:#160F2E;
+    --bg-teal:#081A22;
+    --ink:#F4F2EE;
+    --muted:#A6A2AD;
+    --muted-2:#726E7A;
+    --glass:rgba(255,255,255,0.045);
+    --glass-border:rgba(255,255,255,0.09);
+    --glass-hi:rgba(255,255,255,0.09);
+    --violet:#8C7CFF;
+    --teal:#3FE0D6;
+    --gold:#E9C77E;
+    --grad: linear-gradient(120deg, var(--violet), var(--teal));
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  ::selection{background:var(--violet); color:#0A0B10;}
+
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* Ambient gradient mesh */
+  .mesh{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .blob{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(90px);
+    opacity:0.55;
+    animation:drift 22s ease-in-out infinite alternate;
+  }
+  .blob.one{
+    width:520px; height:520px;
+    background:radial-gradient(circle, var(--violet), transparent 70%);
+    top:-160px; left:-120px;
+    animation-delay:0s;
+  }
+  .blob.two{
+    width:460px; height:460px;
+    background:radial-gradient(circle, var(--teal), transparent 70%);
+    top:220px; right:-140px;
+    animation-delay:-8s;
+  }
+  .blob.three{
+    width:400px; height:400px;
+    background:radial-gradient(circle, var(--gold), transparent 72%);
+    bottom:-140px; left:30%;
+    opacity:0.25;
+    animation-delay:-14s;
+  }
+  @keyframes drift{
+    0%{transform:translate(0,0) scale(1);}
+    100%{transform:translate(40px,-30px) scale(1.08);}
+  }
+  .grain{
+    position:fixed; inset:0; z-index:1; pointer-events:none;
+    opacity:0.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .wrap{max-width:1000px; margin:0 auto; padding:0 28px; position:relative; z-index:2;}
+  a{color:var(--teal); text-decoration:none;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+
+  /* Reveal on scroll */
+  .reveal{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1);
+  }
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* Header */
+  header.top{padding:100px 0 60px;}
+  .prompt{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--muted-2);
+    letter-spacing:.05em;
+    margin-bottom:26px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .prompt .caret{
+    display:inline-block; width:7px; height:13px; background:var(--teal);
+    animation:blink 1.1s steps(1) infinite;
+  }
+  @keyframes blink{50%{opacity:0;}}
+
+  h1{
+    font-family:'Instrument Serif', serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:clamp(52px, 9vw, 92px);
+    line-height:0.98;
+    letter-spacing:-0.01em;
+    background:linear-gradient(100deg, var(--ink) 30%, var(--violet) 55%, var(--teal) 75%, var(--ink) 95%);
+    background-size:250% auto;
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    animation:shimmer 9s ease-in-out infinite;
+  }
+  @keyframes shimmer{
+    0%{background-position:0% center;}
+    50%{background-position:100% center;}
+    100%{background-position:0% center;}
+  }
+
+  .role{
+    font-family:'Inter', sans-serif;
+    font-size:17px;
+    font-weight:500;
+    color:var(--muted);
+    margin-top:14px;
+    letter-spacing:.01em;
+  }
+  .role .dot{color:var(--teal);}
+
+  .thesis{
+    max-width:600px;
+    margin-top:24px;
+    font-size:16.5px;
+    color:#C7C4CF;
+  }
+
+  .contact-row{
+    margin-top:32px;
+    display:flex; flex-wrap:wrap; gap:12px;
+  }
+  .pill{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--ink);
+    background:var(--glass);
+    border:1px solid var(--glass-border);
+    backdrop-filter:blur(14px);
+    padding:9px 16px;
+    border-radius:999px;
+    transition:border-color .25s ease, transform .25s ease, background .25s ease;
+  }
+  .pill:hover{border-color:var(--teal); transform:translateY(-2px); background:rgba(63,224,214,0.06);}
+
+  .tags{margin-top:22px; display:flex; flex-wrap:wrap; gap:9px;}
+  .tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--muted);
+    background:var(--glass);
+    border:1px solid var(--glass-border);
+    padding:6px 12px;
+    border-radius:6px;
+    transition:all .25s ease;
+  }
+  .tag:hover{
+    color:var(--ink);
+    border-color:var(--violet);
+    background:rgba(140,124,255,0.08);
+    transform:translateY(-2px);
+  }
+
+  /* Section shell */
+  section{padding:70px 0;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    background:var(--grad);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    letter-spacing:.1em;
+    margin-bottom:12px;
+  }
+  h2.section-title{
+    font-family:'Instrument Serif', serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:38px;
+    margin-bottom:14px;
+  }
+  .section-sub{color:var(--muted); font-size:15px; max-width:560px; margin-bottom:36px;}
+
+  /* Glass browser window */
+  .browser{
+    border-radius:16px;
+    background:var(--glass);
+    border:1px solid var(--glass-border);
+    backdrop-filter:blur(20px);
+    box-shadow:0 30px 80px -30px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
+    overflow:hidden;
+    transition:box-shadow .4s ease, border-color .4s ease;
+  }
+  .browser:hover{
+    border-color:rgba(255,255,255,0.16);
+    box-shadow:0 40px 100px -30px rgba(0,0,0,0.7), 0 0 60px -20px rgba(140,124,255,0.25), inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+  .browser-tabs{
+    display:flex; align-items:flex-end; gap:2px;
+    padding:14px 14px 0;
+    background:rgba(255,255,255,0.02);
+  }
+  .browser-tab{
+    font-family:'Inter', sans-serif;
+    font-size:13px;
+    font-weight:500;
+    color:var(--muted);
+    background:transparent;
+    border:none;
+    padding:11px 20px;
+    border-radius:10px 10px 0 0;
+    cursor:pointer;
+    display:flex; align-items:center; gap:8px;
+    transition:all .25s ease;
+    position:relative;
+  }
+  .browser-tab .fav{
+    width:7px; height:7px; border-radius:50%;
+    background:var(--muted-2);
+    transition:background .25s ease;
+  }
+  .browser-tab:hover{color:var(--ink);}
+  .browser-tab.active{
+    color:var(--ink);
+    background:var(--glass);
+  }
+  .browser-tab.active .fav{background:var(--teal); box-shadow:0 0 8px var(--teal);}
+
+  .browser-bar{
+    display:flex; align-items:center; gap:12px;
+    padding:11px 16px;
+    background:var(--glass);
+    border-top:1px solid var(--glass-border);
+    border-bottom:1px solid var(--glass-border);
+  }
+  .browser-dots{display:flex; gap:6px;}
+  .browser-dots span{width:9px; height:9px; border-radius:50%; display:inline-block;}
+  .browser-dots span:nth-child(1){background:#FF5F57;}
+  .browser-dots span:nth-child(2){background:#FEBC2E;}
+  .browser-dots span:nth-child(3){background:#28C840;}
+  .browser-url{
+    flex:1;
+    min-width:0;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--muted);
+    background:rgba(255,255,255,0.03);
+    border:1px solid var(--glass-border);
+    border-radius:7px;
+    padding:6px 12px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .browser-url .lock{color:var(--teal); font-size:11px; flex-shrink:0;}
+  .browser-url span#browser-url-text{
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    min-width:0;
+  }
+  .browser-open{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--ink);
+    background:var(--grad);
+    padding:7px 14px;
+    border-radius:7px;
+    white-space:nowrap;
+    transition:opacity .2s ease, transform .2s ease;
+  }
+  .browser-open:hover{opacity:0.85; transform:translateY(-1px);}
+
+  .browser-body{
+    position:relative;
+    height:520px;
+    background:#fff;
+  }
+  .browser-frame{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    border:none;
+    opacity:0;
+    transition:opacity .35s ease;
+  }
+  .browser-frame.active{opacity:1; position:relative;}
+  .browser-frame:not(.active){display:none;}
+
+  .browser-fallback{
+    position:absolute; inset:0;
+    display:none;
+    align-items:center; justify-content:center;
+    flex-direction:column; gap:14px;
+    padding:40px; text-align:center;
+    background:linear-gradient(135deg, #12121a, #0b0b10);
+    color:var(--muted);
+    font-size:14px;
+  }
+  .browser-fallback.show{display:flex;}
+  .browser-fallback a{
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--ink);
+    background:var(--grad);
+    padding:10px 18px;
+    border-radius:8px;
+  }
+
+  @media (max-width:640px){
+    .browser-body{height:380px;}
+    .browser-tab{padding:11px 12px; max-width:38vw;}
+    .browser-tab span.label{
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      display:inline-block; max-width:30vw;
+    }
+    .browser-open span.open-label{display:none;}
+  }
+
+  /* Case detail cards */
+  .cases-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    margin-top:28px;
+  }
+  @media (max-width:760px){ .cases-grid{grid-template-columns:1fr;} }
+
+  .case-card{
+    background:var(--glass);
+    border:1px solid var(--glass-border);
+    border-radius:14px;
+    padding:26px;
+    backdrop-filter:blur(16px);
+    transition:transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+    transform-style:preserve-3d;
+    will-change:transform;
+  }
+  .case-card:hover{
+    border-color:rgba(255,255,255,0.18);
+    box-shadow:0 20px 50px -20px rgba(0,0,0,0.5);
+  }
+  .case-name{
+    font-family:'Instrument Serif', serif; font-style:italic;
+    font-size:24px; margin-bottom:4px;
+  }
+  .case-sub{color:var(--muted); font-size:13.5px; margin-bottom:16px;}
+  .schema-row{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px;}
+  .schema-row span{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--teal);
+    background:rgba(63,224,214,0.08);
+    border:1px solid rgba(63,224,214,0.18);
+    padding:4px 9px;
+    border-radius:5px;
+  }
+  ul.builds{list-style:none;}
+  ul.builds li{
+    position:relative; padding-left:20px; margin-bottom:11px;
+    font-size:14.5px; color:#D3D0DA;
+  }
+  ul.builds li::before{
+    content:"→"; position:absolute; left:0; top:0;
+    background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent;
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .view-link{
+    display:inline-flex; align-items:center; gap:6px;
+    margin-top:6px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--violet);
+    cursor:pointer;
+    background:none; border:none;
+  }
+  .view-link:hover{color:var(--teal);}
+
+  /* Skills */
+  .skills-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(210px,1fr));
+    gap:18px;
+  }
+  .skill-card{
+    background:var(--glass);
+    border:1px solid var(--glass-border);
+    border-radius:14px;
+    padding:22px;
+    backdrop-filter:blur(16px);
+    transition:transform .3s ease, border-color .3s ease;
+  }
+  .skill-card:hover{ transform:translateY(-4px); border-color:rgba(255,255,255,0.16); }
+  .skill-icon{
+    width:34px; height:34px; margin-bottom:14px;
+    display:flex; align-items:center; justify-content:center;
+    border-radius:9px;
+    background:var(--grad);
+  }
+  .skill-icon svg{width:18px; height:18px; stroke:#0A0B10;}
+  .skill-card h3{
+    font-family:'Inter', sans-serif; font-size:13px; font-weight:600;
+    letter-spacing:.03em; text-transform:uppercase; color:var(--ink);
+    margin-bottom:8px;
+  }
+  .skill-card p{font-size:14px; color:var(--muted);}
+
+  footer{
+    padding:56px 0 70px;
+    color:var(--muted-2);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    border-top:1px solid var(--glass-border);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  }
+  footer a{color:var(--muted);}
+  footer a:hover{color:var(--teal);}
+</style>
+</head>
+<body>
+
+<div class="mesh">
+  <div class="blob one"></div>
+  <div class="blob two"></div>
+  <div class="blob three"></div>
+</div>
+<div class="grain"></div>
+
+<div class="wrap">
+
+  <header class="top">
+    <div class="prompt reveal">kitan@web:~$ whoami<span class="caret"></span></div>
+    <h1 class="reveal">Kitan Aderounmu</h1>
+    <div class="role reveal">Web Developer <span class="dot">·</span> design through deployment</div>
+    <p class="thesis reveal">I build production websites end to end for real businesses — the visible design layer and the database, access control, and integrations underneath it. Explore two live client builds below, running right inside this page.</p>
+
+    <div class="contact-row reveal">
+      <a class="pill" href="mailto:aderounmuisrael6@gmail.com">aderounmuisrael6@gmail.com</a>
+      <a class="pill" href="tel:+2349134818161">+234 913 481 8161</a>
+      <span class="pill">Nigeria · Remote (GMT+1)</span>
+    </div>
+
+    <div class="tags reveal">
+      <span class="tag">Supabase</span>
+      <span class="tag">React</span>
+      <span class="tag">Vercel</span>
+      <span class="tag">Row Level Security</span>
+      <span class="tag">Paystack</span>
+      <span class="tag">Serverless Functions</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="eyebrow reveal">// live preview</div>
+    <h2 class="section-title reveal">Step inside the work</h2>
+    <p class="section-sub reveal">A real, running window onto each site — switch tabs to explore either one without leaving this page.</p>
+
+    <div class="browser reveal" id="browser">
+      <div class="browser-tabs">
+        <button class="browser-tab active" data-site="esquires" onclick="switchSite('esquires')">
+          <span class="fav"></span><span class="label">Esquires' Legal</span>
+        </button>
+        <button class="browser-tab" data-site="icp" onclick="switchSite('icp')">
+          <span class="fav"></span><span class="label">Immanuel Capital</span>
+        </button>
+      </div>
+      <div class="browser-bar">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url" id="browser-url">
+          <span class="lock">🔒</span><span id="browser-url-text">esquires-legal.vercel.app</span>
+        </div>
+        <a class="browser-open" id="browser-open" href="https://esquires-legal.vercel.app" target="_blank" rel="noopener"><span class="open-label">Open full site</span> ↗</a>
+      </div>
+      <div class="browser-body">
+        <iframe class="browser-frame active" id="frame-esquires" src="https://esquires-legal.vercel.app" loading="lazy" title="Esquires' Legal live preview"></iframe>
+        <iframe class="browser-frame" id="frame-icp" src="https://www.immanuelcapitalpartners.com/" loading="lazy" title="Immanuel Capital Partners live preview"></iframe>
+        <div class="browser-fallback" id="fallback-esquires">
+          <div>This site doesn't allow inline embedding.</div>
+          <a href="https://esquires-legal.vercel.app" target="_blank" rel="noopener">Open esquires-legal.vercel.app ↗</a>
+        </div>
+        <div class="browser-fallback" id="fallback-icp">
+          <div>This site doesn't allow inline embedding.</div>
+          <a href="https://www.immanuelcapitalpartners.com/" target="_blank" rel="noopener">Open immanuelcapitalpartners.com ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="cases-grid">
+      <div class="case-card reveal">
+        <div class="case-name">Esquires' Legal</div>
+        <div class="case-sub">Nigerian law firm with international offices — corporate website &amp; content platform</div>
+        <div class="schema-row">
+          <span>supabase</span><span>RLS</span><span>vercel functions</span><span>resend</span><span>storage buckets</span>
+        </div>
+        <ul class="builds">
+          <li>Designed and built the full site: single-file HTML architecture, editorial design system (Fraunces + Inter), progressive disclosure via accordions and scroll-triggered reveals.</li>
+          <li>Built a public booking form wired directly to Supabase, with Row Level Security so visitors can submit but never read client data.</li>
+          <li>Built a role-based admin dashboard — separate admin and editor views — covering content, a blog with a pending → publish review workflow, and booking management.</li>
+          <li>Wired automated booking-notification emails: a Supabase Database Webhook triggers a Vercel serverless function that sends through Resend.</li>
+          <li>Delivered under a signed service agreement: one-time build fee plus an ongoing quarterly content &amp; support retainer.</li>
+        </ul>
+        <button class="view-link" onclick="switchSite('esquires'); document.getElementById('browser').scrollIntoView({behavior:'smooth', block:'center'});">↑ View live above</button>
+      </div>
+
+      <div class="case-card reveal">
+        <div class="case-name">Immanuel Capital Partners</div>
+        <div class="case-sub">Nigerian financial advisory firm — corporate website</div>
+        <div class="schema-row">
+          <span>github → vercel</span><span>custom domain</span><span>editorial design</span>
+        </div>
+        <ul class="builds">
+          <li>Built a corporate site in a minimal editorial style (Fraunces + Inter) covering 10 practice areas serving MSMEs, corporates, DFIs, and public-sector clients.</li>
+          <li>Structured a leadership grid for a 9-person partner team and a dark case-study section walking through the firm's DFI advisory track record.</li>
+          <li>Set up the full delivery pipeline: GitHub repo auto-deploying to Vercel, live on a verified custom domain.</li>
+        </ul>
+        <button class="view-link" onclick="switchSite('icp'); document.getElementById('browser').scrollIntoView({behavior:'smooth', block:'center'});">↑ View live above</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow reveal">// stack</div>
+    <h2 class="section-title reveal">How I build</h2>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></div>
+        <h3>Frontend</h3>
+        <p>HTML/CSS/JavaScript, React, responsive layout, scroll-based animation, cross-device QA.</p>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"></path><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"></path></svg></div>
+        <h3>Backend &amp; data</h3>
+        <p>Supabase — Postgres, Auth, Row Level Security, Storage, Database Webhooks. Serverless functions on Vercel.</p>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5 17.5 17.5"></path><path d="M8 3 3 8l4 4 5-5-4-4z"></path><path d="M16 12l5 5-4 4-5-5 4-4z"></path></svg></div>
+        <h3>Integrations</h3>
+        <p>Paystack for payments and subscriptions, Groq AI for LLM-based parsing, Resend for transactional email.</p>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path></svg></div>
+        <h3>Delivery</h3>
+        <p>Git/GitHub, Vercel deployment, PWA setup — plus scoping and client communication for solo-owned projects.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div>Built by Kitan Aderounmu</div>
+    <div><a href="mailto:aderounmuisrael6@gmail.com">aderounmuisrael6@gmail.com</a> · +234 913 481 8161</div>
+  </footer>
+</div>
+
+<script>
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach((el, i) => {
+    el.style.transitionDelay = (i % 6) * 0.06 + 's';
+    io.observe(el);
+  });
+
+  // Browser tab switcher
+  const siteMeta = {
+    esquires: { url: 'esquires-legal.vercel.app', full: 'https://esquires-legal.vercel.app' },
+    icp: { url: 'immanuelcapitalpartners.com', full: 'https://www.immanuelcapitalpartners.com/' },
+  };
+
+  const blockedStatus = { esquires: false, icp: false };
+  let activeSite = 'esquires';
+
+  function updateFallbackVisibility(){
+    Object.keys(siteMeta).forEach(key => {
+      const show = (key === activeSite) && blockedStatus[key];
+      document.getElementById('fallback-' + key).classList.toggle('show', show);
+    });
+  }
+
+  function switchSite(key){
+    activeSite = key;
+    document.querySelectorAll('.browser-tab').forEach(t => t.classList.toggle('active', t.dataset.site === key));
+    document.querySelectorAll('.browser-frame').forEach(f => f.classList.toggle('active', f.id === 'frame-' + key));
+    document.getElementById('browser-url-text').textContent = siteMeta[key].url;
+    document.getElementById('browser-open').href = siteMeta[key].full;
+    updateFallbackVisibility();
+  }
+
+  // Iframe-blocked fallback detection (X-Frame-Options / CSP frame-ancestors)
+  document.querySelectorAll('.browser-frame').forEach(frame => {
+    let loaded = false;
+    frame.addEventListener('load', () => { loaded = true; });
+    const key = frame.id.replace('frame-', '');
+    setTimeout(() => {
+      if(!loaded){
+        blockedStatus[key] = true;
+        updateFallbackVisibility();
+      }
+    }, 4500);
+  });
+
+  // Subtle 3D tilt on case cards
+  document.querySelectorAll('.case-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = `perspective(700px) rotateX(${(-y * 4).toFixed(2)}deg) rotateY(${(x * 4).toFixed(2)}deg) translateY(-3px)`;
+    });
+    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+  });
+</script>
+
+</body>
+</html>
