@@ -4,6 +4,11 @@ import { BrowserWindow } from "@/components/ui/browser-window";
 import { CaseCard } from "@/components/ui/case-card";
 import { SkillCard } from "@/components/ui/skill-card";
 import { ContactForm } from "@/components/ui/contact-form";
+import { SiteNav } from "@/components/ui/site-nav";
+import { RoleRotator } from "@/components/ui/role-rotator";
+import { Reveal } from "@/components/ui/reveal";
+
+const ROLES = ["Web Developer", "Game Developer", "Product Builder", "Entrepreneur"];
 
 const CSS_GRADIENT_FALLBACK = (
   <div className="relative h-full w-full overflow-hidden">
@@ -51,7 +56,6 @@ const SKILLS = [
   { name: "TypeScript", detail: "Typed front end and API routes" },
   { name: "Supabase", detail: "Postgres, Auth, RLS, Storage, Webhooks" },
   { name: "Python", detail: "Scripting and backend logic" },
-  { name: "Godot", detail: "Game systems and tooling" },
   { name: "Groq AI", detail: "LLM-powered parsing pipelines" },
   { name: "Paystack", detail: "Subscriptions and payments" },
   { name: "Roblox", detail: "RemoteEvents, DataStore, Marketplace" },
@@ -61,19 +65,7 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Nav */}
-      <header className="fixed top-0 z-50 w-full border-b border-border/60 bg-background/70 backdrop-blur-md">
-        <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <span className="font-display text-lg text-foreground">
-            Kitan Aderounmu
-          </span>
-          <div className="hidden gap-8 text-sm text-muted-foreground sm:flex">
-            <a href="#work" className="hover:text-foreground">Work</a>
-            <a href="#live" className="hover:text-foreground">Live previews</a>
-            <a href="#skills" className="hover:text-foreground">Skills</a>
-            <a href="#contact" className="hover:text-foreground">Contact</a>
-          </div>
-        </nav>
-      </header>
+      <SiteNav />
 
       {/* Hero */}
       <section className="relative flex min-h-screen items-center overflow-hidden">
@@ -85,7 +77,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-background/40" />
         <div className="relative mx-auto max-w-4xl px-6 text-center">
           <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent-teal">
-            Web Developer
+            <RoleRotator roles={ROLES} />
           </p>
           <h1 className="mt-6 font-display text-5xl leading-tight text-foreground sm:text-7xl">
             I build products end to end,
@@ -102,21 +94,23 @@ export default function Home() {
 
       {/* Work */}
       <section id="work" className="mx-auto w-full max-w-6xl px-6 py-28">
-        <h2 className="reveal-on-scroll is-visible font-display text-3xl text-foreground">
-          Selected work
-        </h2>
+        <Reveal>
+          <h2 className="font-display text-3xl text-foreground">Selected work</h2>
+        </Reveal>
         <div className="mt-10 grid gap-6 sm:grid-cols-2">
-          {CASES.map((project) => (
-            <CaseCard key={project.title} {...project} />
+          {CASES.map((project, i) => (
+            <Reveal key={project.title} delay={i * 80}>
+              <CaseCard {...project} />
+            </Reveal>
           ))}
         </div>
       </section>
 
       {/* Live previews */}
       <section id="live" className="mx-auto w-full max-w-5xl px-6 py-28">
-        <h2 className="reveal-on-scroll is-visible font-display text-3xl text-foreground">
-          Live previews
-        </h2>
+        <Reveal>
+          <h2 className="font-display text-3xl text-foreground">Live previews</h2>
+        </Reveal>
         <p className="mt-3 max-w-2xl text-sm text-muted-foreground">
           Switch tabs to preview two live client sites inline. If a site
           blocks embedding, this falls back to a direct link automatically.
@@ -141,21 +135,23 @@ export default function Home() {
 
       {/* Skills */}
       <section id="skills" className="mx-auto w-full max-w-6xl px-6 py-28">
-        <h2 className="reveal-on-scroll is-visible font-display text-3xl text-foreground">
-          Stack
-        </h2>
+        <Reveal>
+          <h2 className="font-display text-3xl text-foreground">Stack</h2>
+        </Reveal>
         <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {SKILLS.map((skill) => (
-            <SkillCard key={skill.name} {...skill} />
+          {SKILLS.map((skill, i) => (
+            <Reveal key={skill.name} delay={i * 50}>
+              <SkillCard {...skill} />
+            </Reveal>
           ))}
         </div>
       </section>
 
       {/* Contact */}
       <section id="contact" className="mx-auto w-full max-w-2xl px-6 py-28">
-        <h2 className="reveal-on-scroll is-visible font-display text-3xl text-foreground">
-          Get in touch
-        </h2>
+        <Reveal>
+          <h2 className="font-display text-3xl text-foreground">Get in touch</h2>
+        </Reveal>
         <p className="mt-3 text-sm text-muted-foreground">
           Have a project in mind? Send a message and I&apos;ll reply by email.
         </p>
