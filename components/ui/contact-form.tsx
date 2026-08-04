@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { supabase } from "@/lib/supabase";
 import { cn } from "@/lib/utils";
 
 type Status = "idle" | "submitting" | "success" | "error";
@@ -24,20 +23,31 @@ export function ContactForm({ className }: { className?: string }) {
     setStatus("submitting");
     setErrorMessage(null);
 
-    const { error } = await supabase
-      .from("contact_messages")
-      .insert({ name: name.trim(), email: email.trim(), message: message.trim() });
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          message: message.trim(),
+        }),
+      });
 
-    if (error) {
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to send message");
+      }
+
+      setStatus("success");
+      setName("");
+      setEmail("");
+      setMessage("");
+    } catch {
       setStatus("error");
       setErrorMessage("Something went wrong sending that. Try again in a moment.");
-      return;
     }
-
-    setStatus("success");
-    setName("");
-    setEmail("");
-    setMessage("");
   };
 
   if (status === "success") {
