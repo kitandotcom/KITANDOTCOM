@@ -1,168 +1,97 @@
-import { AnimatedGradient } from "@/components/ui/animated-gradient";
-import { WebGLErrorBoundary } from "@/components/ui/webgl-error-boundary";
+import { ArrowDownRight, ArrowUpRight, Check, ExternalLink, Layers3, Mail, MousePointer2, Sparkles } from "lucide-react";
+import type { CSSProperties } from "react";
+import { InteractiveScene } from "@/components/ui/interactive-scene";
 import { BrowserWindow } from "@/components/ui/browser-window";
-import { CaseCard } from "@/components/ui/case-card";
-import { SkillCard } from "@/components/ui/skill-card";
 import { ContactForm } from "@/components/ui/contact-form";
 import { SiteNav } from "@/components/ui/site-nav";
-import { RoleRotator } from "@/components/ui/role-rotator";
 import { Reveal } from "@/components/ui/reveal";
-
-const ROLES = ["Web Developer", "Game Developer", "Product Builder", "Entrepreneur"];
-
-const CSS_GRADIENT_FALLBACK = (
-  <div className="relative h-full w-full overflow-hidden">
-    <div className="animate-blob-drift absolute -left-1/4 top-1/4 h-[60vh] w-[60vh] rounded-full bg-accent-violet/30 blur-[100px]" />
-    <div className="animate-blob-drift absolute right-0 top-0 h-[50vh] w-[50vh] rounded-full bg-accent-teal/25 blur-[100px] [animation-delay:-7s]" />
-    <div className="animate-blob-drift absolute bottom-0 left-1/3 h-[45vh] w-[45vh] rounded-full bg-accent-gold/20 blur-[100px] [animation-delay:-14s]" />
-  </div>
-);
 
 const CASES = [
   {
     title: "Esquires' Legal",
     role: "Full-stack build & ongoing retainer",
-    description:
-      "Corporate site for a Nigerian law firm with international offices — single-page architecture, Supabase-backed bookings and blog, and a role-gated admin dashboard he maintains for the client.",
+    description: "A high-trust legal platform with Supabase-backed bookings and blog content, plus a role-gated admin dashboard maintained after launch.",
     tags: ["Vercel", "Supabase", "Resend"],
     href: "https://esquires-legal.vercel.app",
+    color: "#d6ed61",
+    number: "01",
   },
   {
     title: "Immanuel Capital Partners",
     role: "Corporate website",
-    description:
-      "Live site for a Nigerian financial advisory firm serving MSMEs, corporates and DFIs — ten practice areas, leadership roster, and a dark financial-advisory timeline section.",
+    description: "A considered digital home for a Nigerian financial advisory firm serving MSMEs, corporates, and DFIs across ten practice areas.",
     tags: ["Vercel", "Editorial design"],
     href: "https://www.immanuelcapitalpartners.com",
+    color: "#80d5ce",
+    number: "02",
   },
   {
     title: "Pocket Brain",
     role: "Product — personal finance PWA",
-    description:
-      "A Nigerian personal finance app that parses bank SMS alerts with Groq AI, handles subscriptions through Paystack, and installs as a PWA.",
+    description: "A Nigerian personal finance product that parses bank SMS alerts with Groq AI, handles Paystack subscriptions, and installs as a PWA.",
     tags: ["Supabase", "Groq AI", "Paystack", "PWA"],
+    color: "#e7b36b",
+    number: "03",
   },
   {
     title: "Kitan & Co.",
-    role: "Founder",
-    description:
-      "A web development and design studio built around three service tiers, offering websites built to last.",
+    role: "Founder / studio",
+    description: "A web development and design studio built around clear service tiers and digital products that remain useful after launch day.",
     tags: ["Studio", "Client work"],
+    color: "#b49bff",
+    number: "04",
   },
 ];
 
+const SCENE_PROJECTS = CASES.map((project, index) => ({
+  title: project.title,
+  type: project.role,
+  href: project.href,
+  color: project.color,
+  icon: index === 2 ? "box" : index === 3 ? "game" : index === 1 ? "code" : "globe",
+})) as Array<{ title: string; type: string; href?: string; color: string; icon: "globe" | "code" | "game" | "box" }>;
+
 const SKILLS = [
-  { name: "React / Next.js", detail: "App Router, server components" },
-  { name: "TypeScript", detail: "Typed front end and API routes" },
-  { name: "Supabase", detail: "Postgres, Auth, RLS, Storage, Webhooks" },
-  { name: "Python", detail: "Scripting and backend logic" },
-  { name: "Groq AI", detail: "LLM-powered parsing pipelines" },
-  { name: "Paystack", detail: "Subscriptions and payments" },
-  { name: "Roblox", detail: "RemoteEvents, DataStore, Marketplace" },
+  ["React / Next.js", "App Router, server components"],
+  ["TypeScript", "Typed front end and API routes"],
+  ["Supabase", "Postgres, Auth, RLS, Storage, Webhooks"],
+  ["Python", "Scripting and backend logic"],
+  ["Groq AI", "LLM-powered parsing pipelines"],
+  ["Paystack", "Subscriptions and payments"],
+  ["Roblox", "RemoteEvents, DataStore, Marketplace"],
 ];
 
 export default function Home() {
   return (
-    <div className="flex flex-col">
-      {/* Nav */}
+    <div className="portfolio-shell">
       <SiteNav />
+      <main>
+        <section className="hero-section" id="top">
+          <div className="hero-noise" aria-hidden="true" />
+          <div className="hero-content page-width">
+            <div className="hero-copy">
+              <p className="eyebrow"><span className="eyebrow-mark"><Sparkles size={12} /></span> Kitan Aderounmu / Nigeria · 06°32′N</p>
+              <h1>I make digital things<br /><em>feel inevitable.</em></h1>
+              <p className="hero-intro">I build the website, product, and systems layer that turns a sharp idea into something people can actually use — and come back to.</p>
+              <div className="hero-actions"><a className="button-primary" href="#work">Explore the work <ArrowDownRight size={16} /></a><a className="button-quiet" href="#contact">Start a conversation <ArrowUpRight size={16} /></a></div>
+              <div className="hero-proof"><span><Check size={14} /> independent builder</span><span><Check size={14} /> full-stack by default</span></div>
+            </div>
+            <InteractiveScene projects={SCENE_PROJECTS} />
+          </div>
+          <div className="hero-ticker"><span>selected work</span><span>web / product / game systems</span><span>scroll to orbit ↓</span></div>
+        </section>
 
-      {/* Hero */}
-      <section className="relative flex min-h-screen items-center overflow-hidden">
-        <div className="absolute inset-0">
-          <WebGLErrorBoundary fallback={CSS_GRADIENT_FALLBACK}>
-            <AnimatedGradient />
-          </WebGLErrorBoundary>
-        </div>
-        <div className="absolute inset-0 bg-background/40" />
-        <div className="relative mx-auto max-w-4xl px-6 text-center">
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent-teal">
-            <RoleRotator roles={ROLES} />
-          </p>
-          <h1 className="mt-6 font-display text-5xl leading-tight text-foreground sm:text-7xl">
-            I build products end to end,
-            <br />
-            <span className="italic text-accent-gold">from idea to shipped.</span>
-          </h1>
-          <p className="mx-auto mt-6 max-w-xl text-base text-muted-foreground">
-            Nigeria-based developer and entrepreneur. I write the code, make
-            the product calls, and ship — across client sites, web apps, and
-            games.
-          </p>
-        </div>
-      </section>
+        <section className="intro-band"><div className="page-width intro-grid"><p className="section-label">01 / the premise</p><div><h2>Less “vibe coded.”<br /><em>More built to last.</em></h2><p>Every project is a small system: a point of view, a clear interaction, and enough technical depth to hold up when real people start using it.</p></div></div></section>
 
-      {/* Work */}
-      <section id="work" className="mx-auto w-full max-w-6xl px-6 py-28">
-        <Reveal>
-          <h2 className="font-display text-3xl text-foreground">Selected work</h2>
-        </Reveal>
-        <div className="mt-10 grid gap-6 sm:grid-cols-2">
-          {CASES.map((project, i) => (
-            <Reveal key={project.title} delay={i * 80}>
-              <CaseCard {...project} />
-            </Reveal>
-          ))}
-        </div>
-      </section>
+        <section id="work" className="work-section page-width"><div className="section-heading"><div><p className="section-label">02 / selected work</p><h2>Things I’ve<br /><em>shipped.</em></h2></div><span className="section-count">04 <small>projects</small></span></div><div className="case-grid">{CASES.map((project, index) => <Reveal key={project.title} delay={index * 70}><article className="case-card" style={{ "--case-accent": project.color } as CSSProperties}><div className="case-top"><span>{project.number}</span>{project.href && <a href={project.href} target="_blank" rel="noreferrer">View live <ExternalLink size={13} /></a>}</div><div className="case-glyph"><Layers3 size={20} /></div><h3>{project.title}</h3><p className="case-role">{project.role}</p><p className="case-description">{project.description}</p><div className="case-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div></article></Reveal>)}</div></section>
 
-      {/* Live previews */}
-      <section id="live" className="mx-auto w-full max-w-5xl px-6 py-28">
-        <Reveal>
-          <h2 className="font-display text-3xl text-foreground">Live previews</h2>
-        </Reveal>
-        <p className="mt-3 max-w-2xl text-sm text-muted-foreground">
-          Switch tabs to preview two live client sites inline. If a site
-          blocks embedding, this falls back to a direct link automatically.
-        </p>
-        <div className="mt-10">
-          <BrowserWindow
-            tabs={[
-              {
-                id: "esquires",
-                label: "Esquires' Legal",
-                url: "https://esquires-legal.vercel.app",
-              },
-              {
-                id: "icp",
-                label: "Immanuel Capital Partners",
-                url: "https://www.immanuelcapitalpartners.com",
-              },
-            ]}
-          />
-        </div>
-      </section>
+        <section id="live" className="live-section"><div className="page-width"><div className="section-heading live-heading"><div><p className="section-label">03 / see it in context</p><h2>Go ahead.<br /><em>Click around.</em></h2></div><p>These are live client builds, not screenshots. Switch between them, open the full sites, and see how the work behaves in the wild.</p></div><BrowserWindow tabs={[{ id: "esquires", label: "Esquires' Legal", url: "https://esquires-legal.vercel.app" }, { id: "icp", label: "Immanuel Capital Partners", url: "https://www.immanuelcapitalpartners.com" }]} /></div></section>
 
-      {/* Skills */}
-      <section id="skills" className="mx-auto w-full max-w-6xl px-6 py-28">
-        <Reveal>
-          <h2 className="font-display text-3xl text-foreground">Stack</h2>
-        </Reveal>
-        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {SKILLS.map((skill, i) => (
-            <Reveal key={skill.name} delay={i * 50}>
-              <SkillCard {...skill} />
-            </Reveal>
-          ))}
-        </div>
-      </section>
+        <section id="skills" className="stack-section page-width"><div className="section-heading"><div><p className="section-label">04 / the toolkit</p><h2>Deep enough<br /><em>to ship.</em></h2></div><MousePointer2 size={20} className="section-icon" /></div><div className="stack-grid">{SKILLS.map(([name, detail], index) => <div className="stack-item" key={name}><span>0{index + 1}</span><strong>{name}</strong><small>{detail}</small></div>)}</div></section>
 
-      {/* Contact */}
-      <section id="contact" className="mx-auto w-full max-w-2xl px-6 py-28">
-        <Reveal>
-          <h2 className="font-display text-3xl text-foreground">Get in touch</h2>
-        </Reveal>
-        <p className="mt-3 text-sm text-muted-foreground">
-          Have a project in mind? Send a message and I&apos;ll reply by email.
-        </p>
-        <div className="mt-10">
-          <ContactForm />
-        </div>
-      </section>
-
-      <footer className="border-t border-border px-6 py-10 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} Kitan Aderounmu. Built with Next.js.
-      </footer>
+        <section id="contact" className="contact-section"><div className="page-width contact-grid"><div><p className="section-label">05 / next move</p><h2>Have a thing<br /><em>worth shipping?</em></h2><p className="contact-copy">Tell me what you’re making, where it’s stuck, or what it needs to become. I’ll reply with a useful next step — not a generic pitch.</p><a className="mail-link" href="mailto:hello@kitandotcom.com"><Mail size={16} /> hello@kitandotcom.com <ArrowUpRight size={15} /></a></div><div className="contact-form-wrap"><ContactForm /></div></div></section>
+      </main>
+      <footer className="site-footer page-width"><span className="footer-mark"><Sparkles size={14} /> Kitan Aderounmu</span><span>Built in Nigeria · {new Date().getFullYear()}</span><a href="#top">Back to top ↑</a></footer>
     </div>
   );
 }
