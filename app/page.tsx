@@ -1,6 +1,6 @@
-import { ArrowDownRight, ArrowUpRight, Check, ExternalLink, Layers3, Mail, MousePointer2, Sparkles } from "lucide-react";
+import { ArrowUpRight, ExternalLink, Layers3, Mail, MousePointer2, Sparkles } from "lucide-react";
 import type { CSSProperties } from "react";
-import { InteractiveScene } from "@/components/ui/interactive-scene";
+import { HeroBlock } from "@/components/ui/hero-block-shadcnui";
 import { BrowserWindow } from "@/components/ui/browser-window";
 import { ContactForm } from "@/components/ui/contact-form";
 import { SiteNav } from "@/components/ui/site-nav";
@@ -26,30 +26,14 @@ const CASES = [
     number: "02",
   },
   {
-    title: "Pocket Brain",
-    role: "Product — personal finance PWA",
-    description: "A Nigerian personal finance product that parses bank SMS alerts with Groq AI, handles Paystack subscriptions, and installs as a PWA.",
-    tags: ["Supabase", "Groq AI", "Paystack", "PWA"],
-    color: "#e7b36b",
-    number: "03",
-  },
-  {
     title: "Kitan & Co.",
     role: "Founder / studio",
     description: "A web development and design studio built around clear service tiers and digital products that remain useful after launch day.",
     tags: ["Studio", "Client work"],
     color: "#b49bff",
-    number: "04",
+    number: "03",
   },
 ];
-
-const SCENE_PROJECTS = CASES.map((project, index) => ({
-  title: project.title,
-  type: project.role,
-  href: project.href,
-  color: project.color,
-  icon: index === 2 ? "box" : index === 3 ? "game" : index === 1 ? "code" : "globe",
-})) as Array<{ title: string; type: string; href?: string; color: string; icon: "globe" | "code" | "game" | "box" }>;
 
 const SKILLS = [
   ["React / Next.js", "App Router, server components"],
@@ -66,24 +50,11 @@ export default function Home() {
     <div className="portfolio-shell">
       <SiteNav />
       <main>
-        <section className="hero-section" id="top">
-          <div className="hero-noise" aria-hidden="true" />
-          <div className="hero-content page-width">
-            <div className="hero-copy">
-              <p className="eyebrow"><span className="eyebrow-mark"><Sparkles size={12} /></span> Kitan Aderounmu / Nigeria · 06°32′N</p>
-              <h1>I make digital things<br /><em>feel inevitable.</em></h1>
-              <p className="hero-intro">I build the website, product, and systems layer that turns a sharp idea into something people can actually use — and come back to.</p>
-              <div className="hero-actions"><a className="button-primary" href="#work">Explore the work <ArrowDownRight size={16} /></a><a className="button-quiet" href="#contact">Start a conversation <ArrowUpRight size={16} /></a></div>
-              <div className="hero-proof"><span><Check size={14} /> independent builder</span><span><Check size={14} /> full-stack by default</span></div>
-            </div>
-            <InteractiveScene projects={SCENE_PROJECTS} />
-          </div>
-          <div className="hero-ticker"><span>selected work</span><span>web / product / game systems</span><span>scroll to orbit ↓</span></div>
-        </section>
+        <section id="top"><HeroBlock /></section>
 
         <section className="intro-band"><div className="page-width intro-grid"><p className="section-label">01 / the premise</p><div><h2>Less “vibe coded.”<br /><em>More built to last.</em></h2><p>Every project is a small system: a point of view, a clear interaction, and enough technical depth to hold up when real people start using it.</p></div></div></section>
 
-        <section id="work" className="work-section page-width"><div className="section-heading"><div><p className="section-label">02 / selected work</p><h2>Things I’ve<br /><em>shipped.</em></h2></div><span className="section-count">04 <small>projects</small></span></div><div className="case-grid">{CASES.map((project, index) => <Reveal key={project.title} delay={index * 70}><article className="case-card" style={{ "--case-accent": project.color } as CSSProperties}><div className="case-top"><span>{project.number}</span>{project.href && <a href={project.href} target="_blank" rel="noreferrer">View live <ExternalLink size={13} /></a>}</div><div className="case-glyph"><Layers3 size={20} /></div><h3>{project.title}</h3><p className="case-role">{project.role}</p><p className="case-description">{project.description}</p><div className="case-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div></article></Reveal>)}</div></section>
+        <section id="work" className="work-section page-width"><div className="section-heading"><div><p className="section-label">02 / selected work</p><h2>Things I’ve<br /><em>shipped.</em></h2></div><span className="section-count">03 <small>projects</small></span></div><div className="case-grid">{CASES.map((project, index) => <Reveal key={project.title} delay={index * 70}><article className="case-card" style={{ "--case-accent": project.color } as CSSProperties}><div className="case-top"><span>{project.number}</span>{project.href && <a href={project.href} target="_blank" rel="noreferrer">View live <ExternalLink size={13} /></a>}</div><div className="case-glyph"><Layers3 size={20} /></div><h3>{project.title}</h3><p className="case-role">{project.role}</p><p className="case-description">{project.description}</p><div className="case-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div></article></Reveal>)}</div></section>
 
         <section id="live" className="live-section"><div className="page-width"><div className="section-heading live-heading"><div><p className="section-label">03 / see it in context</p><h2>Go ahead.<br /><em>Click around.</em></h2></div><p>These are live client builds, not screenshots. Switch between them, open the full sites, and see how the work behaves in the wild.</p></div><BrowserWindow tabs={[{ id: "esquires", label: "Esquires' Legal", url: "https://esquires-legal.vercel.app" }, { id: "icp", label: "Immanuel Capital Partners", url: "https://www.immanuelcapitalpartners.com" }]} /></div></section>
 
