@@ -4,16 +4,10 @@ import { Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
-const LINKS = [
-  { id: "work", label: "Work" },
-  { id: "live", label: "Live sites" },
-  { id: "skills", label: "Toolkit" },
-  { id: "contact", label: "Contact" },
-];
+const LINKS = [{ id: "work", label: "Work" }, { id: "pricing", label: "Pricing" }, { id: "live", label: "Live sites" }, { id: "contact", label: "Contact" }];
 
 export function SiteNav() {
   const [active, setActive] = useState<string | null>(null);
-
   useEffect(() => {
     const sections = LINKS.map((link) => document.getElementById(link.id)).filter((el): el is HTMLElement => el !== null);
     if (!sections.length) return;
@@ -25,13 +19,5 @@ export function SiteNav() {
     return () => observer.disconnect();
   }, []);
 
-  return (
-    <header className="portfolio-nav">
-      <nav className="page-width nav-inner">
-        <a href="#top" className="nav-brand"><span><Sparkles size={14} /></span><strong>KITAN</strong><small>builds things</small></a>
-        <div className="nav-links">{LINKS.map((link) => <a key={link.id} href={`#${link.id}`} className={cn(active === link.id && "is-active")}>{link.label}<i /></a>)}</div>
-        <a href="#contact" className="nav-cta">Let’s talk <span>↗</span></a>
-      </nav>
-    </header>
-  );
+  return <header className="portfolio-nav"><nav className="page-width nav-inner"><a href="#top" className="nav-brand"><span><Sparkles size={14} /></span><strong>KITAN</strong><small>builds things</small></a><div className="nav-links">{LINKS.map((link) => <a key={link.id} href={`#${link.id}`} className={cn(active === link.id && "is-active")}>{link.label}<i /></a>)}</div><a href="#pricing" className="nav-cta">View plans <span>↗</span></a></nav></header>;
 }
