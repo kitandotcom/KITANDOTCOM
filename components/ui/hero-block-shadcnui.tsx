@@ -14,7 +14,7 @@ export function HeroBlock() {
         <motion.div initial={{ opacity: 1, y: 0 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
           <motion.div initial={{ scale: 1, opacity: 1 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.2, type: "spring", stiffness: 200 }} className="prompt-avatar" aria-hidden="true"><Sparkles size={30} /></motion.div>
           <motion.p initial={{ opacity: 1, y: 0 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25, duration: 0.5 }} className="prompt-eyebrow">Kitan Aderounmu / independent builder</motion.p>
-          <motion.h1 id="hero-title" initial={{ opacity: 1, y: 0 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}>Full-stack developer<br /><em>who ships the whole thing.</em></motion.h1>
+          <motion.h1 id="hero-title" initial={{ opacity: 1, y: 0 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}>From idea to interface<br /><em>to shipped.</em></motion.h1>
           <motion.p initial={{ opacity: 1, y: 0 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.6 }} className="prompt-lede">I craft beautiful, performant web applications, products, and game systems with modern technology — and the judgment to make them useful.</motion.p>
           <motion.div initial={{ opacity: 1, y: 0 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }} className="prompt-actions">
             <Button size="lg" onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}><Mail size={16} /> Get in touch</Button>

@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, Inter, IBM_Plex_Mono } from "next/font/google";
+import { Cinzel, Hanken_Grotesk, Space_Grotesk, Space_Mono } from "next/font/google";
 import "./globals.css";
 
-const instrumentSerif = Instrument_Serif({ variable: "--font-instrument-serif", subsets: ["latin"], weight: "400", style: ["normal", "italic"] });
-const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
-const ibmPlexMono = IBM_Plex_Mono({ variable: "--font-ibm-plex-mono", subsets: ["latin"], weight: ["400", "500"] });
+const spaceGrotesk = Space_Grotesk({ variable: "--font-space-grotesk", subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
+const hankenGrotesk = Hanken_Grotesk({ variable: "--font-hanken-grotesk", subsets: ["latin"], weight: ["300", "400", "500", "600"] });
+const spaceMono = Space_Mono({ variable: "--font-space-mono", subsets: ["latin"], weight: ["400", "700"] });
+const cinzel = Cinzel({ variable: "--font-cinzel", subsets: ["latin"], weight: ["400", "600", "700"] });
 
 export const metadata: Metadata = {
-  title: "Kitan Aderounmu — Digital products, built to last",
-  description: "Portfolio of Kitan Aderounmu — an independent developer building websites, products, and game systems from idea to shipped.",
+  title: "KITAN [DEV.SH] — Full-Stack Developer & Systems Architect",
+  description: "Portfolio of Kitan Aderounmu — an independent developer building websites, products, and game systems from idea to interface to shipped.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${instrumentSerif.variable} ${inter.variable} ${ibmPlexMono.variable} h-full antialiased`}>
+    <html lang="en" className={`${spaceGrotesk.variable} ${hankenGrotesk.variable} ${spaceMono.variable} ${cinzel.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-background text-foreground">{children}</body>
     </html>
   );
