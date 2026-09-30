@@ -13,7 +13,7 @@ type SceneProject = {
 
 const ICONS = { globe: Globe2, code: Code2, game: Gamepad2, box: Box };
 
-export function InteractiveScene({ projects }: { projects: SceneProject[] }) {
+export function InteractiveScene({ projects, onSelectProject }: { projects: SceneProject[]; onSelectProject?: (title: string) => void }) {
   const sceneRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -59,7 +59,10 @@ export function InteractiveScene({ projects }: { projects: SceneProject[] }) {
               key={project.title}
               type="button"
               className={`${positions[index % positions.length]} ${index === active ? "is-active" : ""}`}
-              onClick={() => setActive(index)}
+              onClick={() => {
+                setActive(index);
+                onSelectProject?.(project.title);
+              }}
               aria-label={`Select ${project.title}`}
               aria-pressed={index === active}
               style={{ "--node-color": project.color } as CSSProperties}
@@ -75,7 +78,7 @@ export function InteractiveScene({ projects }: { projects: SceneProject[] }) {
       <div className="scene-detail">
         <div className="scene-detail-icon" style={{ background: activeProject.color }}><ActiveIcon size={18} /></div>
         <div><span>selected from the orbit</span><strong>{activeProject.title}</strong></div>
-        {activeProject.href && <a href={activeProject.href} target="_blank" rel="noreferrer" aria-label={`Open ${activeProject.title}`}><ArrowUpRight size={17} /></a>}
+        <button type="button" className="scene-detail-jump" onClick={() => onSelectProject?.(activeProject.title)} aria-label={`View ${activeProject.title} project`}><span>View project</span><ArrowUpRight size={17} /></button>
       </div>
     </div>
   );
