@@ -7,6 +7,8 @@ type Currency = "NGN" | "USD";
 type Retainer = { name: string; ngn: number; usd: number; description: string; coverage: string[] };
 type BuildTier = { id: string; name: string; ngn: number; usd: number; scope: string; timeline: string; featured?: boolean; retainers: Retainer[] };
 
+type Market = { country: string; currency: Currency };
+
 const BUILD_TIERS: BuildTier[] = [
   { id: "starter", name: "Starter", ngn: 25000, usd: 350, scope: "A focused one-page site for a clear offer, profile, or launch.", timeline: "5–7 days", retainers: [
     { name: "Reactive", ngn: 20000, usd: 150, description: "Keep the site online and handle small fixes when they appear.", coverage: ["Uptime and error checks", "Small fixes as needed", "Domain and hosting checks", "Email support as needed"] },
@@ -32,19 +34,37 @@ const BUILD_TIERS: BuildTier[] = [
 function formatMoney(value: number, currency: Currency) { return new Intl.NumberFormat(currency === "NGN" ? "en-NG" : "en-US", { style: "currency", currency, maximumFractionDigits: 0 }).format(value); }
 function monthly(value: number) { return Math.round(value / 3); }
 
+function browserMarket(): Market {
+  const timezone = typeof Intl !== "undefined" ? Intl.DateTimeFormat().resolvedOptions().timeZone : "";
+  const language = typeof navigator !== "undefined" ? navigator.language.toLowerCase() : "";
+  const isNigeria = timezone.includes("Lagos") || language.includes("-ng");
+  const isUnitedStates = timezone.startsWith("America/") || language.includes("-us");
+  return isNigeria ? { country: "Nigeria", currency: "NGN" } : isUnitedStates ? { country: "United States", currency: "USD" } : { country: "International", currency: "USD" };
+}
+
 export function PricingSection() {
-  const [currency, setCurrency] = useState<Currency>("NGN");
-  const [location, setLocation] = useState("Nigeria");
+  const [market, setMarket] = useState<Market>({ country: "International", currency: "USD" });
   useEffect(() => {
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const language = navigator.language || "";
-    const isNigeria = timezone.includes("Lagos") || language.toLowerCase().includes("-ng");
-    setLocation(isNigeria ? "Nigeria" : "your region");
-    setCurrency(isNigeria ? "NGN" : "USD");
+    let cancelled = false;
+    const fallback = browserMarket();
+    setMarket(fallback);
+    fetch("https://ipapi.co/json/", { signal: AbortSignal.timeout(2500) })
+      .then((response) => response.ok ? response.json() : Promise.reject(new Error("market lookup failed")))
+      .then((data: { country_code?: string }) => {
+        if (cancelled) return;
+        const isNigeria = data.country_code === "NG";
+        const isUnitedStates = data.country_code === "US";
+        setMarket(isNigeria ? { country: "Nigeria", currency: "NGN" } : isUnitedStates ? { country: "United States", currency: "USD" } : fallback);
+      })
+      .catch(() => undefined);
+    return () => { cancelled = true; };
   }, []);
 
+  const { currency } = market;
+  const handleMarketChange = (value: string) => setMarket(value === "NGN" ? { country: "Nigeria", currency: "NGN" } : { country: "United States", currency: "USD" });
+
   return <section id="pricing" className="pricing-section"><div className="page-width">
-    <div className="pricing-heading"><div><p className="section-label">02 / build systems</p><h2>Choose the right<br /><em>starting point.</em></h2><p className="pricing-intro">Four build tiers, each with a small set of quarterly care options. Open a care option to see exactly what its fee covers.</p></div><div className="pricing-controls"><div className="location-chip"><MapPin size={13} /><span>Showing prices for {location}</span></div><div className="currency-toggle" role="group" aria-label="Choose pricing currency"><button className={currency === "NGN" ? "is-active" : ""} onClick={() => setCurrency("NGN")}>₦ NGN</button><button className={currency === "USD" ? "is-active" : ""} onClick={() => setCurrency("USD")}>$ USD</button></div><p className="fx-note"><Globe2 size={12} /> USD pricing is independently set for the US market.</p></div></div>
+    <div className="pricing-heading"><div><p className="section-label">02 / build systems</p><h2>Choose the right<br /><em>starting point.</em></h2><p className="pricing-intro">Four build tiers, each with a small set of quarterly care options. Open a care option to see exactly what its fee covers.</p></div><div className="pricing-controls"><div className="location-chip"><MapPin size={13} /><span>Prices localized for {market.country}</span></div><label className="market-select-label" htmlFor="market-select">Price view</label><div className="market-select-wrap"><select id="market-select" value={currency} onChange={(event) => handleMarketChange(event.target.value)} aria-label="Choose price market"><option value="NGN">Nigeria · ₦ NGN</option><option value="USD">United States / international · $ USD</option></select><ChevronDown size={14} aria-hidden="true" /></div><p className="fx-note"><Globe2 size={12} /> USD pricing is independently set for the US market, not converted from naira.</p></div></div>
     <div className="pricing-grid pricing-grid-four">{BUILD_TIERS.map((tier, index) => <article className={`price-card build-tier-card ${tier.featured ? "is-featured" : ""}`} key={tier.id}>
       <div className="price-card-top"><span className="price-index">0{index + 1}</span>{tier.featured && <span className="recommended">recommended</span>}</div><h3>{tier.name}</h3><p className="tier-scope">{tier.scope}</p><div className="build-price"><strong>{formatMoney(currency === "NGN" ? tier.ngn : tier.usd, currency)}</strong><span>one-time build<br />{tier.timeline}</span></div>
       <div className="retainer-heading"><span>Quarterly care</span><span>{tier.retainers.length} options</span></div><div className="retainer-list">{tier.retainers.map((retainer) => <details className="retainer-detail" key={retainer.name}><summary><span><strong>{retainer.name}</strong><small>{formatMoney(currency === "NGN" ? retainer.ngn : retainer.usd, currency)} / quarter</small></span><ChevronDown size={15} /></summary><div className="retainer-copy"><p>{retainer.description}</p><ul>{retainer.coverage.map((item) => <li key={item}>{item}</li>)}</ul><small>Approx. {formatMoney(currency === "NGN" ? monthly(retainer.ngn) : monthly(retainer.usd), currency)} / month</small></div></details>)}</div><a href="#contact" className="price-cta">Ask about {tier.name} <ChevronRight size={15} /></a>
