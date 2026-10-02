@@ -9,6 +9,7 @@ export function ContactForm({ className }: { className?: string }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [website, setWebsite] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -31,6 +32,7 @@ export function ContactForm({ className }: { className?: string }) {
           name: name.trim(),
           email: email.trim(),
           message: message.trim(),
+          website,
         }),
       });
 
@@ -46,6 +48,7 @@ export function ContactForm({ className }: { className?: string }) {
       setName("");
       setEmail("");
       setMessage("");
+      setWebsite("");
     } catch {
       setStatus("error");
       setErrorMessage("Something went wrong sending that. Try again in a moment.");
@@ -101,11 +104,21 @@ export function ContactForm({ className }: { className?: string }) {
       onSubmit={handleSubmit}
       className={cn("glass-panel flex flex-col gap-4 rounded-2xl p-8", className)}
     >
+      <input
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        value={website}
+        onChange={(event) => setWebsite(event.target.value)}
+        className="absolute -left-[9999px] h-px w-px opacity-0"
+        name="website"
+      />
       <div className="grid gap-4 sm:grid-cols-2">
         <FloatingField
           id="name"
           label="Name"
           type="text"
+          maxLength={120}
           value={name}
           onChange={setName}
         />
@@ -113,6 +126,7 @@ export function ContactForm({ className }: { className?: string }) {
           id="email"
           label="Email"
           type="email"
+          maxLength={254}
           value={email}
           onChange={setEmail}
         />
@@ -122,6 +136,7 @@ export function ContactForm({ className }: { className?: string }) {
         label="Message"
         as="textarea"
         rows={5}
+        maxLength={5000}
         value={message}
         onChange={setMessage}
       />
@@ -152,6 +167,7 @@ function FloatingField({
   type = "text",
   as = "input",
   rows,
+  maxLength,
 }: {
   id: string;
   label: string;
@@ -160,6 +176,7 @@ function FloatingField({
   type?: string;
   as?: "input" | "textarea";
   rows?: number;
+  maxLength?: number;
 }) {
   const [focused, setFocused] = useState(false);
   const floated = focused || value.length > 0;
@@ -176,6 +193,7 @@ function FloatingField({
           id={id}
           value={value}
           rows={rows}
+          maxLength={maxLength}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           onChange={(e) => onChange(e.target.value)}
@@ -185,6 +203,7 @@ function FloatingField({
         <input
           id={id}
           type={type}
+          maxLength={maxLength}
           value={value}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
