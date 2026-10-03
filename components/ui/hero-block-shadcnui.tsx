@@ -23,7 +23,7 @@ export function HeroBlock() {
           <motion.div initial={{ opacity: 1 }} animate={{ opacity: 1 }} transition={{ delay: 0.65, duration: 0.6 }} className="prompt-socials">
             <a href="https://github.com/kitandotcom/KITANDOTCOM" target="_blank" rel="noreferrer" aria-label="GitHub"><Code2 size={17} /></a>
             <a href="https://www.linkedin.com/in/kitanaderounmu/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><BriefcaseBusiness size={17} /></a>
-            <a href="mailto:hello@kitandotcom.com" aria-label="Email Kitan"><Mail size={17} /></a>
+            <a href="mailto:aderounmuisrael6@gmail.com" aria-label="Email Kitan"><Mail size={17} /></a>
             <span>available for thoughtful builds <ArrowUpRight size={13} /></span>
           </motion.div>
         </motion.div>
