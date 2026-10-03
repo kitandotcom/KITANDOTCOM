@@ -1,6 +1,6 @@
 "use client";
 
-import { Sparkles } from "lucide-react";
+import { Menu, Sparkles, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -8,6 +8,7 @@ const LINKS = [{ id: "work", label: "Work" }, { id: "pricing", label: "Pricing" 
 
 export function SiteNav() {
   const [active, setActive] = useState<string | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     const sections = LINKS.map((link) => document.getElementById(link.id)).filter((el): el is HTMLElement => el !== null);
     if (!sections.length) return;
@@ -19,5 +20,6 @@ export function SiteNav() {
     return () => observer.disconnect();
   }, []);
 
-  return <header className="portfolio-nav"><div className="nav-telemetry" aria-hidden="true"><span>⟡</span> FULL-STACK BUILDER <span>⎊</span> REACT / NEXT.JS <span>⌬</span> TYPESCRIPT <span>⬡</span> BUILT IN NIGERIA [UTC+1]</div><nav className="page-width nav-inner"><a href="#top" className="nav-brand"><span><Sparkles size={14} /></span><strong>KITAN</strong><small>from idea to interface to shipped</small></a><div className="nav-links">{LINKS.map((link) => <a key={link.id} href={`#${link.id}`} className={cn(active === link.id && "is-active")}>{link.label}<i /></a>)}</div><a href="#pricing" className="nav-cta">View plans <span>↗</span></a></nav></header>;
+  const closeMenu = () => setMenuOpen(false);
+  return <header className="portfolio-nav"><div className="nav-telemetry" aria-hidden="true"><span>⟡</span> FULL-STACK BUILDER <span>⎊</span> REACT / NEXT.JS <span>⌬</span> TYPESCRIPT <span>⬡</span> BUILT IN NIGERIA [UTC+1]</div><nav className="page-width nav-inner"><a href="#top" className="nav-brand" onClick={closeMenu}><span><Sparkles size={14} /></span><strong>KITAN</strong><small>from idea to interface to shipped</small></a><div className="nav-links">{LINKS.map((link) => <a key={link.id} href={`#${link.id}`} className={cn(active === link.id && "is-active")}>{link.label}<i /></a>)}</div><a href="#pricing" className="nav-cta">View plans <span>↗</span></a><button type="button" className="nav-menu-button" onClick={() => setMenuOpen((open) => !open)} aria-expanded={menuOpen} aria-controls="mobile-navigation" aria-label={menuOpen ? "Close navigation" : "Open navigation"}>{menuOpen ? <X size={18} /> : <Menu size={18} />}</button></nav>{menuOpen && <div id="mobile-navigation" className="nav-mobile-menu">{LINKS.map((link) => <a key={link.id} href={`#${link.id}`} className={cn(active === link.id && "is-active")} onClick={closeMenu}>{link.label}<span>↗</span></a>)}</div>}</header>;
 }
