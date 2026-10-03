@@ -153,3 +153,11 @@ button { cursor: pointer; }
   .project-row .live-browser-viewport { height: auto; aspect-ratio: 4 / 5; max-height: 520px; }
   .studio-preview-inner { min-height: 300px; }
 }
+
+/* Fluid interaction audit: immediate feedback, visible focus, and reduced motion */
+:where(a, button, input, textarea):focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.nav-cta:active, .button-primary:active, .button-quiet:active, .scene-detail-jump:active, .switcher-buttons button:active { transform: scale(.98); transition: transform .1s ease-out; }
+.scene-world { transition: none; }
+@media (prefers-reduced-transparency: reduce) {
+  .portfolio-nav { background: var(--background); backdrop-filter: none; }
+}
