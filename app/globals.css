@@ -144,3 +144,8 @@ button { cursor: pointer; }
   .nav-mobile-menu a { display: flex; align-items: center; justify-content: space-between; padding: 14px 2px; color: var(--foreground); border-bottom: 1px solid var(--border); font: 12px var(--mono); text-transform: uppercase; }
   .nav-mobile-menu a span, .nav-mobile-menu a.is-active { color: var(--accent); }
 }
+
+.browser-fallback-kicker { color: var(--accent); font: 10px var(--mono); letter-spacing: .12em; text-transform: uppercase; }
+.browser-fallback strong { font: 600 clamp(24px, 4vw, 42px)/1 var(--display); letter-spacing: -.06em; }
+.browser-fallback p { max-width: 360px; margin: 4px 0 8px; line-height: 1.6; }
+.browser-fallback a { display: inline-flex; align-items: center; gap: 6px; padding: 11px 15px; color: white; background: var(--accent); border-radius: 999px; font: 10px var(--mono); text-transform: uppercase; }
