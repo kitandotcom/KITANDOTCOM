@@ -149,3 +149,5 @@ button { cursor: pointer; }
 .browser-fallback strong { font: 600 clamp(24px, 4vw, 42px)/1 var(--display); letter-spacing: -.06em; }
 .browser-fallback p { max-width: 360px; margin: 4px 0 8px; line-height: 1.6; }
 .browser-fallback a { display: inline-flex; align-items: center; gap: 6px; padding: 11px 15px; color: white; background: var(--accent); border-radius: 999px; font: 10px var(--mono); text-transform: uppercase; }
+
+.browser-loading { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted-foreground); background: var(--background); font: 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; }
