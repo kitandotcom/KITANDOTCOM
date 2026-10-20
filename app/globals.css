@@ -174,3 +174,14 @@ button { cursor: pointer; }
 .pricing-ownership-note { flex-basis: 100%; padding-top: 4px; color: var(--muted-foreground); font: 10px/1.6 var(--mono); }
 .pricing-ownership-note strong { color: var(--foreground); }
 @media (max-width: 700px) { .pricing-ownership-note { order: 3; } }
+
+/* Tier explanations keep the pricing concrete without turning every card into a wall of text */
+.tier-explanation { margin: 0 0 14px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.tier-explanation summary { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 11px 0; color: var(--accent); cursor: pointer; font: 9px var(--mono); letter-spacing: .08em; text-transform: uppercase; list-style: none; }
+.tier-explanation summary::-webkit-details-marker { display: none; }
+.tier-explanation summary svg { transition: transform .25s var(--ease-out); }
+.tier-explanation[open] summary svg { transform: rotate(180deg); }
+.tier-explanation > div { padding: 0 0 12px; color: var(--muted-foreground); font-size: 11px; line-height: 1.5; }
+.tier-explanation p { margin: 0 0 8px; }
+.tier-explanation p:last-child { margin-bottom: 0; }
+.tier-explanation strong { color: var(--foreground); }
