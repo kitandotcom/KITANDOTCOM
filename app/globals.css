@@ -214,3 +214,13 @@ button { cursor: pointer; }
 .project-row-live .live-browser { margin-inline: 0; }
 .project-row-live .live-browser iframe { max-width: 100%; }
 @media (max-width: 700px) { .comparison-scroll-hint { margin-bottom: 8px; } .comparison-scroll { max-width: 100%; } .project-row-live { overflow: hidden; } .project-row-live .live-browser { border-radius: 14px; } }
+
+/* Blend the comparison into the pricing canvas and lock live-site shells to their rows */
+.comparison-scroll { border: 0; border-radius: 0; background: transparent; }
+.comparison-table thead th { background: transparent; }
+.project-row-live { position: relative; left: 0; right: auto; align-items: stretch; overflow: hidden; box-sizing: border-box; }
+.project-row-live .live-browser { position: relative; inset: auto; align-self: stretch; box-sizing: border-box; transform: none; }
+.project-row-live .live-browser-toolbar { min-width: 0; overflow: hidden; box-sizing: border-box; }
+.project-row-live .browser-address, .project-row-live .browser-open-top { min-width: 0; }
+.project-row-live .live-browser-switcher, .project-row-live .live-browser-viewport, .project-row-live .live-browser-footer { min-width: 0; max-width: 100%; box-sizing: border-box; }
+@media (max-width: 700px) { .project-row-live { padding-inline: 0; } .project-row-live .live-browser { width: 100%; margin-inline: 0; } .project-row-live .live-browser-toolbar { width: 100%; } }
