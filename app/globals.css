@@ -185,3 +185,23 @@ button { cursor: pointer; }
 .tier-explanation p { margin: 0 0 8px; }
 .tier-explanation p:last-child { margin-bottom: 0; }
 .tier-explanation strong { color: var(--foreground); }
+
+/* Quick comparison: a scannable decision layer beneath the detailed tier cards */
+.comparison-section { margin-top: 76px; padding-top: 46px; border-top: 1px solid var(--border); }
+.comparison-heading { display: grid; grid-template-columns: 1fr 360px; gap: 60px; align-items: end; margin-bottom: 28px; }
+.comparison-heading h3 { margin: 15px 0 0; font: 600 clamp(38px, 4.5vw, 62px)/.92 var(--display); letter-spacing: -.08em; }
+.comparison-heading h3 em { color: var(--accent); font-style: normal; }
+.comparison-heading > p { margin: 0 0 4px; color: var(--muted-foreground); font-size: 13px; line-height: 1.6; }
+.comparison-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 16px; background: rgba(255,255,255,.48); -webkit-overflow-scrolling: touch; }
+.comparison-table { width: 100%; min-width: 850px; border-collapse: collapse; text-align: left; }
+.comparison-table th, .comparison-table td { padding: 16px 14px; border-bottom: 1px solid var(--border); vertical-align: top; font-size: 11px; line-height: 1.45; }
+.comparison-table thead th { color: var(--accent); background: rgba(255,255,255,.55); font: 9px var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+.comparison-table tbody tr:last-child th, .comparison-table tbody tr:last-child td { border-bottom: 0; }
+.comparison-table tbody th { width: 105px; color: var(--foreground); font-weight: 600; }
+.comparison-table tbody th strong { display: block; font: 600 16px var(--display); letter-spacing: -.04em; }
+.comparison-table tbody th small { display: inline-block; margin-top: 5px; color: var(--accent); font: 8px var(--mono); text-transform: uppercase; }
+.comparison-table td { color: var(--muted-foreground); }
+.comparison-table td:nth-child(5) { color: var(--foreground); font: 600 14px var(--display); white-space: nowrap; }
+.comparison-note { margin: 16px 0 0; color: var(--muted-foreground); font: 10px/1.6 var(--mono); }
+@media (max-width: 980px) { .comparison-heading { grid-template-columns: 1fr; gap: 20px; } }
+@media (max-width: 700px) { .comparison-section { margin-top: 56px; padding-top: 36px; } .comparison-heading h3 { font-size: 49px; } .comparison-scroll { margin-inline: -17px; border-radius: 0; border-inline: 0; } .comparison-table th, .comparison-table td { padding: 14px 12px; } }
