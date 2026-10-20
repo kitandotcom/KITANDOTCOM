@@ -151,3 +151,26 @@ button { cursor: pointer; }
 .browser-fallback a { display: inline-flex; align-items: center; gap: 6px; padding: 11px 15px; color: white; background: var(--accent); border-radius: 999px; font: 10px var(--mono); text-transform: uppercase; }
 
 .browser-loading { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted-foreground); background: var(--background); font: 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+
+/* Offer clarity: explain the service before asking visitors to compare tiers */
+.offer-section { padding: 112px 0; background: var(--background); border-bottom: 1px solid var(--border); }
+.offer-heading { display: grid; grid-template-columns: 1fr 360px; gap: 60px; align-items: end; margin-bottom: 42px; }
+.offer-heading h2 { margin: 17px 0 0; font: 600 clamp(50px, 6vw, 86px)/.9 var(--display); letter-spacing: -.085em; }
+.offer-heading h2 em { color: var(--accent); font-style: normal; }
+.offer-heading > p { margin: 0 0 6px; color: var(--muted-foreground); font-size: 15px; line-height: 1.65; }
+.offer-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.offer-grid article { min-height: 245px; display: flex; flex-direction: column; align-items: flex-start; padding: 28px 24px; border-left: 1px solid var(--border); }
+.offer-grid article:last-child { border-right: 1px solid var(--border); }
+.offer-number { color: var(--accent); font: 9px var(--mono); letter-spacing: .13em; }
+.offer-grid h3 { margin: 30px 0 8px; font: 600 24px var(--display); letter-spacing: -.06em; }
+.offer-grid p { max-width: 310px; margin: 0; color: var(--muted-foreground); font-size: 12px; line-height: 1.6; }
+.offer-grid a { display: inline-flex; align-items: center; gap: 5px; margin-top: auto; padding-top: 22px; color: var(--accent); font: 10px var(--mono); text-transform: uppercase; }
+.offer-note { margin: 23px 0 0; color: var(--muted-foreground); font: 10px/1.6 var(--mono); }
+.offer-note strong { color: var(--foreground); }
+.tier-fit { min-height: 42px; margin: 0 0 17px; padding-left: 10px; color: var(--foreground); border-left: 2px solid var(--accent); font-size: 11px; line-height: 1.5; }
+@media (max-width: 980px) { .offer-heading { grid-template-columns: 1fr; gap: 24px; } }
+@media (max-width: 700px) { .offer-section { padding-block: 78px 72px; } .offer-grid { grid-template-columns: 1fr; } .offer-grid article { min-height: 0; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); } .offer-grid article:last-child { border-bottom: 0; } .offer-heading h2 { font-size: 53px; } .tier-fit { min-height: 0; } }
+
+.pricing-ownership-note { flex-basis: 100%; padding-top: 4px; color: var(--muted-foreground); font: 10px/1.6 var(--mono); }
+.pricing-ownership-note strong { color: var(--foreground); }
+@media (max-width: 700px) { .pricing-ownership-note { order: 3; } }
