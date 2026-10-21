@@ -297,3 +297,36 @@ button { cursor: pointer; }
   .scene-core, .core-ring, .scene-orbit.orbit-a, .scene-orbit.orbit-b, .live-dot { animation: none; }
   .offer-grid article:hover, .price-card:hover, .case-tags span:hover { transform: none; }
 }
+
+/* UX-law pass: hierarchy, proximity, feedback, progressive disclosure, and continuous motion */
+.category-items a { position: relative; overflow: hidden; }
+.category-items a::after { content: ""; position: absolute; right: 18px; bottom: 15px; width: 0; height: 1px; background: var(--accent); transition: width .28s var(--ease-out); }
+.category-items a:hover::after, .category-items a:focus-visible::after { width: 34px; }
+.offer-grid article { position: relative; }
+.offer-grid article::after { content: ""; position: absolute; top: 0; left: 0; width: 0; height: 2px; background: var(--accent); transition: width .3s var(--ease-out); }
+.offer-grid article:hover::after, .offer-grid article:focus-within::after { width: 100%; }
+.offer-grid a, .price-cta, .mail-link, .live-browser-footer a { transition: color .2s var(--ease-out), gap .2s var(--ease-out); }
+.offer-grid a:hover, .price-cta:hover, .mail-link:hover, .live-browser-footer a:hover { gap: 9px; }
+.price-cta svg, .offer-grid a svg, .mail-link svg:last-child, .live-browser-footer a svg { transition: transform .25s var(--ease-out); }
+.price-cta:hover svg, .offer-grid a:hover svg, .mail-link:hover svg:last-child, .live-browser-footer a:hover svg { transform: translateX(3px); }
+.tier-explanation summary, .retainer-detail summary { min-height: 44px; transition: color .2s var(--ease-out), background .2s var(--ease-out); }
+.tier-explanation summary:hover, .retainer-detail summary:hover { color: var(--foreground); background: rgba(220,236,255,.35); }
+.scene-orbit.orbit-a { animation: orbit-pulse 2.4s ease-in-out infinite; }
+.scene-orbit.orbit-b { animation: orbit-pulse 3.1s ease-in-out -.8s infinite reverse; }
+.scene-orbit { will-change: opacity, box-shadow; }
+.project-node .node-card { animation: node-glow 3.2s ease-in-out infinite; }
+.project-node:nth-of-type(2) .node-card { animation-delay: -.8s; }
+.project-node:nth-of-type(3) .node-card { animation-delay: -1.6s; }
+@keyframes orbit-pulse {
+  0%, 100% { opacity: .42; box-shadow: 0 0 0 rgba(0,113,227,0); }
+  38% { opacity: .92; box-shadow: 0 0 22px rgba(0,113,227,.16); }
+  62% { opacity: .62; box-shadow: 0 0 8px rgba(0,113,227,.08); }
+}
+@keyframes node-glow {
+  0%, 100% { box-shadow: 0 12px 25px rgba(29,29,31,.08); }
+  50% { box-shadow: 0 16px 30px rgba(0,113,227,.13); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scene-orbit, .project-node .node-card { animation: none; }
+  .category-items a::after, .offer-grid article::after { transition: none; }
+}
