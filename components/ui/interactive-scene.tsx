@@ -17,6 +17,7 @@ const ICONS = { globe: Globe2, code: Code2, game: Gamepad2, box: Box };
 export function InteractiveScene({ projects, onSelectProject }: { projects: SceneProject[]; onSelectProject?: (title: string) => void }) {
   const sceneRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
+  const [inView, setInView] = useState(false);
   const reduceMotion = useReducedMotion();
   const targetX = useMotionValue(0);
   const targetY = useMotionValue(0);
@@ -28,8 +29,10 @@ export function InteractiveScene({ projects, onSelectProject }: { projects: Scen
   useEffect(() => {
     const scene = sceneRef.current;
     if (!scene) return;
+    const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { threshold: 0, rootMargin: "120px 0px" });
+    observer.observe(scene);
     const handleMove = (event: PointerEvent) => {
-      if (reduceMotion || event.pointerType === "touch") return;
+      if (!inView || reduceMotion || event.pointerType === "touch") return;
       const rect = scene.getBoundingClientRect();
       const x = (event.clientX - rect.left) / rect.width - 0.5;
       const y = (event.clientY - rect.top) / rect.height - 0.5;
@@ -43,16 +46,17 @@ export function InteractiveScene({ projects, onSelectProject }: { projects: Scen
     scene.addEventListener("pointermove", handleMove);
     scene.addEventListener("pointerleave", reset);
     return () => {
+      observer.disconnect();
       scene.removeEventListener("pointermove", handleMove);
       scene.removeEventListener("pointerleave", reset);
     };
-  }, [reduceMotion, targetX, targetY]);
+  }, [inView, reduceMotion, targetX, targetY]);
 
   const activeProject = projects[active];
   const ActiveIcon = ICONS[activeProject.icon];
 
   return (
-    <div ref={sceneRef} className="scene-wrap">
+    <div ref={sceneRef} className={`scene-wrap${inView ? " is-in-view" : ""}`}>
       <div className="scene-label scene-label-top"><span className="live-dot" /> interactive workspace / pointer enabled</div>
       <div className="scene-grid" aria-hidden="true" />
       <div className="scene-orbit orbit-a" aria-hidden="true" />

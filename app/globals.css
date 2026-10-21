@@ -355,3 +355,18 @@ button { cursor: pointer; }
   .price-card[data-tilt-card], .price-card[data-tilt-card]:hover { transform: none; will-change: auto; }
   .price-card[data-tilt-card] > * { transform: none; }
 }
+
+/* Animation performance: keep compositor hints scoped to active interactions */
+.scene-wrap { contain: layout paint; }
+.scene-wrap:not(.is-in-view) .scene-core,
+.scene-wrap:not(.is-in-view) .core-ring,
+.scene-wrap:not(.is-in-view) .scene-orbit,
+.scene-wrap:not(.is-in-view) .live-dot,
+.scene-wrap:not(.is-in-view) .node-card { animation-play-state: paused; }
+.scene-orbit { will-change: auto; }
+.price-card[data-tilt-card] { will-change: auto; }
+.price-card[data-tilt-card]:hover { will-change: transform; }
+@media (prefers-reduced-motion: reduce) {
+  .scene-wrap { contain: none; }
+  .price-card[data-tilt-card]:hover { will-change: auto; }
+}
