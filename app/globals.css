@@ -224,3 +224,38 @@ button { cursor: pointer; }
 .project-row-live .browser-address, .project-row-live .browser-open-top { min-width: 0; }
 .project-row-live .live-browser-switcher, .project-row-live .live-browser-viewport, .project-row-live .live-browser-footer { min-width: 0; max-width: 100%; box-sizing: border-box; }
 @media (max-width: 700px) { .project-row-live { padding-inline: 0; } .project-row-live .live-browser { width: 100%; margin-inline: 0; } .project-row-live .live-browser-toolbar { width: 100%; } }
+
+
+/* Final mobile live-preview containment */
+.project-row,
+.project-row-live,
+.project-row-live .live-browser,
+.project-row-live .live-browser-viewport,
+.project-row-live .browser-frame {
+  contain: layout paint;
+}
+.project-row-live .live-browser,
+.project-row-live .live-browser-viewport,
+.project-row-live .browser-frame,
+.project-row-live iframe {
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: hidden;
+}
+.project-row-live .live-browser-toolbar,
+.project-row-live .live-browser-switcher,
+.project-row-live .live-browser-footer {
+  width: 100%;
+  max-width: 100%;
+}
+@media (max-width: 700px) {
+  .project-row-live {
+    margin-inline: 0;
+    transform: none;
+  }
+  .project-row-live .live-browser {
+    margin-inline: 0;
+    border-radius: 14px;
+  }
+}
