@@ -346,3 +346,12 @@ button { cursor: pointer; }
 @media (prefers-reduced-motion: reduce) {
   .parallax-backdrop { position: absolute; inset: 0; transform: none; will-change: auto; }
 }
+
+/* Comparison-card tilt: pointer-aware on desktop, calm and flat on touch devices */
+.price-card[data-tilt-card] { transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(0); transform-style: preserve-3d; transition: transform .18s var(--ease-out), box-shadow .28s var(--ease-out), border-color .25s ease; will-change: transform; }
+.price-card[data-tilt-card]:hover { transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-4px); }
+.price-card[data-tilt-card] > * { transform: translateZ(8px); }
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  .price-card[data-tilt-card], .price-card[data-tilt-card]:hover { transform: none; will-change: auto; }
+  .price-card[data-tilt-card] > * { transform: none; }
+}

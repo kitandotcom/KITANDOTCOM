@@ -63,7 +63,20 @@ export function PricingSection() {
   const { currency } = market;
   return <section id="pricing" className="pricing-section"><div className="page-width">
     <div className="pricing-heading"><div><p className="section-label">02 / build systems</p><h2>Choose the right<br /><em>starting point.</em></h2><p className="pricing-intro">Pay once for the build. Add optional quarterly care if you want ongoing maintenance, content updates, or an active technical partner. Open a care option to see exactly what its fee covers.</p></div><div className="pricing-controls"><div className="location-chip"><MapPin size={13} /><span>Prices localized for {market.country}</span></div><div className="market-display" aria-live="polite"><span>Pricing market</span><strong>{market.country === "Nigeria" ? "Nigeria · ₦ NGN" : market.country === "United States" ? "United States · $ USD" : "International · $ USD"}</strong></div></div></div>
-    <div className="pricing-grid pricing-grid-four">{BUILD_TIERS.map((tier, index) => <article className={`price-card build-tier-card ${tier.featured ? "is-featured" : ""}`} key={tier.id}>
+    <div className="pricing-grid pricing-grid-four">{BUILD_TIERS.map((tier, index) => <article className={`price-card build-tier-card ${tier.featured ? "is-featured" : ""}`} data-tilt-card key={tier.id}
+      onPointerMove={(event) => {
+        if (event.pointerType !== "mouse") return;
+        const card = event.currentTarget;
+        const bounds = card.getBoundingClientRect();
+        const rotateX = ((event.clientY - bounds.top) / bounds.height - 0.5) * -4;
+        const rotateY = ((event.clientX - bounds.left) / bounds.width - 0.5) * 5;
+        card.style.setProperty("--tilt-x", `${rotateX.toFixed(2)}deg`);
+        card.style.setProperty("--tilt-y", `${rotateY.toFixed(2)}deg`);
+      }}
+      onPointerLeave={(event) => {
+        event.currentTarget.style.setProperty("--tilt-x", "0deg");
+        event.currentTarget.style.setProperty("--tilt-y", "0deg");
+      }}>
       <div className="price-card-top"><span className="price-index">0{index + 1}</span>{tier.featured && <span className="recommended">recommended</span>}</div><h3>{tier.name}</h3><p className="tier-scope">{tier.scope}</p><p className="tier-fit">{tier.fit}</p><div className="tier-deliverables-label">Included in build</div><ul className="tier-deliverables">{tier.deliverables.map((item) => <li key={item}>{item}</li>)}</ul><details className="tier-explanation"><summary>Understand this tier <ChevronDown size={14} /></summary><div><p>{tier.explanation}</p><p><strong>Move up when:</strong> {tier.nextStep}</p></div></details><div className="build-price"><strong>{formatMoney(currency === "NGN" ? tier.ngn : tier.usd, currency)}</strong><span>one-time build<br />{tier.timeline}</span></div>
       <div className="retainer-heading"><span>Quarterly care</span><span>{tier.retainers.length} options</span></div><div className="retainer-list">{tier.retainers.map((retainer) => <details className="retainer-detail" key={retainer.name}><summary><span><strong>{retainer.name}</strong><small>{formatMoney(currency === "NGN" ? retainer.ngn : retainer.usd, currency)} / quarter</small></span><ChevronDown size={15} /></summary><div className="retainer-copy"><p>{retainer.description}</p><ul>{retainer.coverage.map((item) => <li key={item}>{item}</li>)}</ul><small>Approx. {formatMoney(currency === "NGN" ? monthly(retainer.ngn) : monthly(retainer.usd), currency)} / month</small></div></details>)}</div><a href="#contact" className="price-cta">Ask about {tier.name} <ChevronRight size={15} /></a>
     </article>)}</div><div className="pricing-footnote"><span>Build fees are one-time. Care is optional and billed quarterly.</span><span className="pricing-ownership-note"><strong>Account ownership:</strong> You own your hosting, database, and project accounts from day one. We set them up with you.</span><span>Need a custom scope? <a href="#contact">Talk to Kitan <ChevronRight size={13} /></a></span></div>
