@@ -9,6 +9,7 @@ import { ContactForm } from "@/components/ui/contact-form";
 import { PricingSection } from "@/components/ui/pricing-section";
 import { SiteNav } from "@/components/ui/site-nav";
 import { Reveal } from "@/components/ui/reveal";
+import { ParallaxBackdrop } from "@/components/ui/parallax-backdrop";
 
 const CASES = [
   { title: "Esquires' Legal", role: "Full-stack build & ongoing retainer", description: "A high-trust legal platform with Supabase-backed bookings and blog content, plus a role-gated admin dashboard maintained after launch.", tags: ["Vercel", "Supabase", "Resend"], href: "https://esquires-legal.vercel.app", color: "#e4b34f", number: "01" },
@@ -26,6 +27,7 @@ const SCENE_PROJECTS = [
 
 export default function Home() {
   return <div className="portfolio-shell">
+    <ParallaxBackdrop />
     <SiteNav />
     <main>
       <section id="top"><HeroBlock /></section>

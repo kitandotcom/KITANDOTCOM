@@ -330,3 +330,19 @@ button { cursor: pointer; }
   .scene-orbit, .project-node .node-card { animation: none; }
   .category-items a::after, .offer-grid article::after { transition: none; }
 }
+
+/* Subtle depth layer: slow enough to support hierarchy, never compete with content */
+.portfolio-shell { position: relative; isolation: isolate; }
+.portfolio-shell > .parallax-backdrop { z-index: 2; }
+.portfolio-shell > :not(.parallax-backdrop) { position: relative; z-index: 3; }
+.parallax-backdrop { --parallax-y: 0px; position: fixed; inset: -12vh 0; pointer-events: none; overflow: hidden; background: radial-gradient(circle at 18% calc(22% + var(--parallax-y)), rgba(0,113,227,.055), transparent 24%), radial-gradient(circle at 82% calc(66% + var(--parallax-y)), rgba(228,179,79,.06), transparent 25%), radial-gradient(circle at 48% calc(100% + var(--parallax-y)), rgba(95,127,97,.045), transparent 28%); transform: translate3d(0, var(--parallax-y), 0); will-change: transform; }
+.parallax-backdrop::before { content: ""; position: absolute; inset: 0; opacity: .28; background-image: linear-gradient(rgba(29,29,31,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(29,29,31,.045) 1px, transparent 1px); background-size: 84px 84px; mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 78%, transparent); transform: rotate(-4deg) scale(1.12); }
+.parallax-backdrop::after { content: ""; position: absolute; width: 52vw; height: 52vw; top: 14%; right: -18vw; border: 1px solid rgba(0,113,227,.09); border-radius: 50%; box-shadow: 0 0 0 34px rgba(0,113,227,.018), 0 0 0 76px rgba(0,113,227,.012); }
+@media (max-width: 700px) {
+  .parallax-backdrop { inset: -7vh 0; }
+  .parallax-backdrop::before { background-size: 62px 62px; opacity: .2; }
+  .parallax-backdrop::after { width: 88vw; height: 88vw; right: -42vw; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .parallax-backdrop { position: absolute; inset: 0; transform: none; will-change: auto; }
+}
