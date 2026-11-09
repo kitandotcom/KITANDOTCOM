@@ -16,6 +16,10 @@ export function ParallaxBackdrop() {
     let orbAnimation: Animation | null = null;
     let readyTimer: number | null = null;
     let lastBounce = 0;
+    let orbSize = 0;
+    const measureOrb = () => {
+      orbSize = orb?.offsetWidth ?? 0;
+    };
     const update = () => {
       if (reduceMotion.matches || document.hidden) {
         backdrop.style.setProperty("--parallax-y", "0px");
@@ -32,9 +36,11 @@ export function ParallaxBackdrop() {
       const progress = Math.min(window.scrollY / maxScroll, 1);
       const orbX = 16 + Math.sin(progress * Math.PI * 2.4) * 25;
       const orbY = 18 + ((progress * 58) % 58);
+      const x = (window.innerWidth - orbSize) * (orbX / 100);
+      const y = (window.innerHeight - orbSize) * (orbY / 100);
       backdrop.style.setProperty("--parallax-y", `${offset}px`);
-      orb?.style.setProperty("--orb-x", `${orbX}%`);
-      orb?.style.setProperty("--orb-y", `${orbY}%`);
+      orb?.style.setProperty("--orb-x", `${x}px`);
+      orb?.style.setProperty("--orb-y", `${y}px`);
       frame = 0;
     };
     const onScroll = () => {
@@ -51,22 +57,31 @@ export function ParallaxBackdrop() {
         orbAnimation?.cancel();
         orbAnimation = orb.animate(
           [
-            { transform: "translate3d(0, 0, 0) scale(.9)" },
-            { transform: "translate3d(0, -25px, 0) scale(1.16)" },
-            { transform: "translate3d(0, 0, 0) scale(1)" },
+            { scale: ".9" },
+            { scale: "1.16" },
+            { scale: "1" },
           ],
           { duration: 520, easing: "cubic-bezier(.23, 1, .32, 1)" },
         );
       });
     };
 
-    update();
+    frame = window.requestAnimationFrame(() => {
+      measureOrb();
+      update();
+    });
     window.addEventListener("scroll", onScroll, { passive: true });
+    const onResize = () => {
+      measureOrb();
+      update();
+    };
+    window.addEventListener("resize", onResize, { passive: true });
     const onMotionPreferenceChange = () => update();
     reduceMotion.addEventListener("change", onMotionPreferenceChange);
     document.addEventListener("visibilitychange", update);
     return () => {
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
       reduceMotion.removeEventListener("change", onMotionPreferenceChange);
       document.removeEventListener("visibilitychange", update);
       if (frame) window.cancelAnimationFrame(frame);
