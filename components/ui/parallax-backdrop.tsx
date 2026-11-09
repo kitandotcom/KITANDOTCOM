@@ -41,7 +41,7 @@ export function ParallaxBackdrop() {
         update();
         if (!orb || reduceMotion.matches || document.hidden) return;
         const now = performance.now();
-        if (now - lastBounce < 110) return;
+        if (now - lastBounce < 420) return;
         lastBounce = now;
         orbAnimation?.cancel();
         orbAnimation = orb.animate(
