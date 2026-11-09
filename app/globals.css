@@ -370,3 +370,22 @@ button { cursor: pointer; }
   .scene-wrap { contain: none; }
   .price-card[data-tilt-card]:hover { will-change: auto; }
 }
+
+/* Pricing entrance: reveal the offer in a calm editorial sequence without creating layout gaps */
+.pricing-card-entrance { display: flex; min-width: 0; }
+.pricing-card-entrance > .price-card { width: 100%; }
+.pricing-section.is-visible .pricing-entrance-item,
+.pricing-section.is-visible .pricing-card-entrance { animation: pricing-item-in .62s var(--ease-out) both; will-change: opacity, transform; }
+.pricing-section.is-visible .pricing-card-entrance:nth-child(1) { animation-delay: 70ms; }
+.pricing-section.is-visible .pricing-card-entrance:nth-child(2) { animation-delay: 130ms; }
+.pricing-section.is-visible .pricing-card-entrance:nth-child(3) { animation-delay: 190ms; }
+.pricing-section.is-visible .pricing-card-entrance:nth-child(4) { animation-delay: 250ms; }
+.pricing-section.is-visible .comparison-section { animation-delay: 320ms; }
+@keyframes pricing-item-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pricing-section.is-visible .pricing-entrance-item,
+  .pricing-section.is-visible .pricing-card-entrance { animation: none; will-change: auto; }
+}
