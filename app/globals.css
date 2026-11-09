@@ -389,3 +389,61 @@ button { cursor: pointer; }
   .pricing-section.is-visible .pricing-entrance-item,
   .pricing-section.is-visible .pricing-card-entrance { animation: none; will-change: auto; }
 }
+
+/* Hybrid motion layer: a quiet scroll-responsive orb behind the editorial surface */
+.scroll-orb {
+  position: absolute;
+  left: var(--orb-x, 16%);
+  top: var(--orb-y, 18%);
+  display: block;
+  width: clamp(72px, 10vw, 138px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(0, 113, 227, .2);
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 28%, rgba(255,255,255,.9), rgba(138,191,255,.3) 36%, rgba(0,113,227,.07) 68%, transparent 70%);
+  box-shadow: 0 0 0 12px rgba(0,113,227,.025), 0 18px 42px rgba(0,113,227,.08);
+  opacity: .72;
+  pointer-events: none;
+  transform: translate3d(0, 0, 0);
+  will-change: transform, left, top;
+}
+
+/* Tactile tap feedback: every important control has a direct mobile response */
+.category-items a,
+.offer-grid a,
+.project-node,
+.scene-detail > button,
+.switcher-buttons button,
+.price-cta,
+.mail-link,
+.nav-cta,
+.button-primary,
+.button-quiet,
+.tier-explanation summary,
+.retainer-detail summary {
+  -webkit-tap-highlight-color: transparent;
+}
+.category-items a:active,
+.offer-grid a:active,
+.project-node:active .node-card,
+.scene-detail > button:active,
+.switcher-buttons button:active,
+.price-cta:active,
+.mail-link:active,
+.nav-cta:active,
+.button-primary:active,
+.button-quiet:active,
+.tier-explanation summary:active,
+.retainer-detail summary:active {
+  transform: scale(.975);
+  transition-duration: .1s;
+}
+
+html { scroll-padding-top: 82px; }
+@media (max-width: 700px) {
+  .scroll-orb { width: 76px; opacity: .56; }
+  html { scroll-padding-top: 68px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-orb { display: none !important; }
+}
