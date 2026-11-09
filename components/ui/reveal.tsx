@@ -30,7 +30,7 @@ export function Reveal({
           observer.disconnect();
         }
       },
-      { threshold: 0.15, rootMargin: "0px 0px -80px 0px" }
+      { threshold: 0.01, rootMargin: "0px 0px 180px 0px" }
     );
 
     observer.observe(el);
