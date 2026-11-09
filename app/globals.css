@@ -447,3 +447,55 @@ html { scroll-padding-top: 82px; }
 @media (prefers-reduced-motion: reduce) {
   .scroll-orb { display: none !important; }
 }
+
+/* Visible depth layer: the orb sits above section fills but below all readable content */
+.portfolio-shell > .parallax-backdrop { z-index: 4; }
+.portfolio-shell > :not(.parallax-backdrop) { position: relative; z-index: 5; }
+.scroll-orb {
+  width: clamp(104px, 14vw, 184px);
+  border-color: rgba(0, 113, 227, .3);
+  background: radial-gradient(circle at 34% 28%, rgba(255,255,255,.96), rgba(138,191,255,.5) 34%, rgba(228,179,79,.18) 57%, rgba(0,113,227,.1) 71%, transparent 73%);
+  box-shadow: 0 0 0 14px rgba(0,113,227,.055), 0 0 0 30px rgba(228,179,79,.035), 0 20px 48px rgba(0,113,227,.16);
+  opacity: .86;
+}
+.category-items a:active,
+.offer-grid a:active,
+.project-node:active .node-card,
+.scene-detail > button:active,
+.switcher-buttons button:active,
+.price-cta:active,
+.mail-link:active,
+.nav-cta:active,
+.button-primary:active,
+.button-quiet:active,
+.tier-explanation summary:active,
+.retainer-detail summary:active {
+  transform: scale(.95);
+  filter: brightness(.96);
+}
+@media (max-width: 700px) {
+  .scroll-orb { width: 104px; opacity: .78; }
+}
+
+/* Clearer section handoffs: visible enough to feel intentional, still calm enough to read through */
+.reveal-item {
+  transition: opacity .82s var(--ease-out), transform .82s var(--ease-out), filter .82s var(--ease-out);
+}
+.reveal-item:not(.is-visible) {
+  filter: blur(3px);
+  transform: translateY(34px) scale(.985);
+}
+.reveal-item.is-visible {
+  filter: blur(0);
+  transform: translateY(0) scale(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-item,
+  .reveal-item:not(.is-visible),
+  .reveal-item.is-visible {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition: none;
+  }
+}

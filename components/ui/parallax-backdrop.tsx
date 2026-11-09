@@ -14,6 +14,7 @@ export function ParallaxBackdrop() {
 
     let frame = 0;
     let orbAnimation: Animation | null = null;
+    let lastBounce = 0;
     const update = () => {
       if (reduceMotion.matches || document.hidden) {
         backdrop.style.setProperty("--parallax-y", "0px");
@@ -39,14 +40,17 @@ export function ParallaxBackdrop() {
       frame = window.requestAnimationFrame(() => {
         update();
         if (!orb || reduceMotion.matches || document.hidden) return;
+        const now = performance.now();
+        if (now - lastBounce < 110) return;
+        lastBounce = now;
         orbAnimation?.cancel();
         orbAnimation = orb.animate(
           [
             { transform: "translate3d(0, 0, 0) scale(.9)" },
-            { transform: "translate3d(0, -13px, 0) scale(1.08)" },
+            { transform: "translate3d(0, -25px, 0) scale(1.16)" },
             { transform: "translate3d(0, 0, 0) scale(1)" },
           ],
-          { duration: 440, easing: "cubic-bezier(.23, 1, .32, 1)" },
+          { duration: 520, easing: "cubic-bezier(.23, 1, .32, 1)" },
         );
       });
     };

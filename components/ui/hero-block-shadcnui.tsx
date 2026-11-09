@@ -1,12 +1,11 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowDown, ArrowUpRight, BriefcaseBusiness, Code2, Mail, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function HeroBlock() {
-  const reduceMotion = useReducedMotion();
-  const entrance = (delay: number) => reduceMotion ? { initial: false, animate: { opacity: 1, y: 0 } } : { initial: { opacity: 0, y: 18 }, animate: { opacity: 1, y: 0 }, transition: { delay, duration: 0.65, ease: [0.23, 1, 0.32, 1] as const } };
+  const entrance = (_delay: number) => ({ initial: false, animate: { opacity: 1, y: 0 } });
 
   return (
     <section className="prompt-hero" aria-labelledby="hero-title">
@@ -15,7 +14,7 @@ export function HeroBlock() {
       <div className="prompt-hero-glow prompt-hero-glow-two" aria-hidden="true" />
       <div className="prompt-hero-content page-width">
         <motion.div {...entrance(0)}>
-          <motion.div {...(reduceMotion ? { initial: false } : { initial: { scale: 0.88, opacity: 0 }, animate: { scale: 1, opacity: 1 }, transition: { delay: 0.12, type: "spring", stiffness: 220, damping: 18 } })} className="prompt-avatar" aria-hidden="true"><Sparkles size={30} /></motion.div>
+          <motion.div initial={false} animate={{ scale: 1, opacity: 1 }} className="prompt-avatar" aria-hidden="true"><Sparkles size={30} /></motion.div>
           <motion.p {...entrance(0.16)} className="prompt-eyebrow">Kitan Aderounmu / independent builder</motion.p>
           <motion.h1 {...entrance(0.24)} id="hero-title">From idea to interface<br /><em>to shipped.</em></motion.h1>
           <motion.p {...entrance(0.34)} className="prompt-hook">Bring your websites to life — and make them work harder.</motion.p>

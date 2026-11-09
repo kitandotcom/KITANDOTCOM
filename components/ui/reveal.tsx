@@ -34,15 +34,27 @@ export function Reveal({
     );
 
     observer.observe(el);
-    return () => observer.disconnect();
+    const revealIfInViewport = () => {
+      const bounds = el.getBoundingClientRect();
+      if (bounds.top < window.innerHeight + 180 && bounds.bottom > -40) {
+        setVisible(true);
+        observer.disconnect();
+      }
+    };
+    const frame = window.requestAnimationFrame(revealIfInViewport);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
   }, []);
 
   return (
     <div
       ref={ref}
       className={cn(
-        "transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
-        visible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0",
+        "reveal-item transition-all duration-900 ease-[cubic-bezier(0.16,1,0.3,1)]",
+        visible ? "is-visible translate-y-0 opacity-100" : "translate-y-6 opacity-100",
         className
       )}
       style={{ transitionDelay: visible ? `${delay}ms` : "0ms" }}
