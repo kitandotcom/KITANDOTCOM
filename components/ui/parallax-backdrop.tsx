@@ -14,11 +14,13 @@ export function ParallaxBackdrop() {
 
     let frame = 0;
     let orbAnimation: Animation | null = null;
+    let readyTimer: number | null = null;
     let lastBounce = 0;
     const update = () => {
       if (reduceMotion.matches || document.hidden) {
         backdrop.style.setProperty("--parallax-y", "0px");
         orbAnimation?.cancel();
+        orb?.classList.remove("cooldown-ready");
         orb?.style.setProperty("display", "none");
         frame = 0;
         return;
@@ -43,6 +45,9 @@ export function ParallaxBackdrop() {
         const now = performance.now();
         if (now - lastBounce < 420) return;
         lastBounce = now;
+        orb.classList.add("cooldown-ready");
+        if (readyTimer) window.clearTimeout(readyTimer);
+        readyTimer = window.setTimeout(() => orb.classList.remove("cooldown-ready"), 260);
         orbAnimation?.cancel();
         orbAnimation = orb.animate(
           [
@@ -66,6 +71,7 @@ export function ParallaxBackdrop() {
       document.removeEventListener("visibilitychange", update);
       if (frame) window.cancelAnimationFrame(frame);
       orbAnimation?.cancel();
+      if (readyTimer) window.clearTimeout(readyTimer);
     };
   }, []);
 
